@@ -185,7 +185,8 @@ final class MediaToolsTests: XCTestCase {
         s.loudness = 100
         do { _ = try await run(.normalizeAudio, [input], s); XCTFail("Expected invalid normalization") }
         catch { XCTAssertTrue(error.localizedDescription.contains("Loudness")) }
-        let cancelled = Task { withUnsafeCurrentTask { $0?.cancel() }; return try await self.run(.metadata, [input], s) }
+        let cancellationSettings = s
+        let cancelled = Task { withUnsafeCurrentTask { $0?.cancel() }; return try await self.run(.metadata, [input], cancellationSettings) }
         do { _ = try await cancelled.value; XCTFail("Expected cancellation") }
         catch { XCTAssertTrue(error is CancellationError) }
         XCTAssertEqual(try Data(contentsOf: input), original)

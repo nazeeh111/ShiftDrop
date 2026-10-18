@@ -60,7 +60,7 @@ final class ToolStudioModel: ObservableObject {
             let selectedTool = tool
             Task.detached { [weak self] in
                 guard let duration = try? await AVURLAsset(url: first).load(.duration), duration.seconds.isFinite, duration.seconds > 0 else { return }
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     guard let self, self.inputs.first == first, self.tool == selectedTool, !self.running, self.settings.end == 10 else { return }
                     self.settings.end = duration.seconds
                 }
@@ -98,12 +98,12 @@ final class ToolStudioModel: ObservableObject {
         task = Task.detached(priority: .userInitiated) { [weak self] in
             do {
                 let result = try await FileToolEngine.run(request)
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     guard let self else { return }; self.running = false; self.task = nil; self.output = result.outputURLs; self.showingResult = true
                     self.message = preview ? "Preview rendered from your actual settings. Save a copy to keep the result." : "Saved \(result.outputURLs.count) new file\(result.outputURLs.count == 1 ? "" : "s") · \(AppModel.bytes(result.outputBytes))."
                 }
             } catch {
-                DispatchQueue.main.async { self?.running = false; self?.task = nil; self?.message = error is CancellationError ? "Cancelled. Original files are unchanged." : error.localizedDescription }
+                DispatchQueue.main.async { [weak self] in self?.running = false; self?.task = nil; self?.message = error is CancellationError ? "Cancelled. Original files are unchanged." : error.localizedDescription }
             }
         }
     }

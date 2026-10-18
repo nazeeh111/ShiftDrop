@@ -55,7 +55,7 @@ final class FileActions {
             let terminal = URL(fileURLWithPath: "/System/Applications/Utilities/Terminal.app")
             let config = NSWorkspace.OpenConfiguration()
             NSWorkspace.shared.open(directories, withApplicationAt: terminal, configuration: config) { [weak model] _, error in
-                if let error { DispatchQueue.main.async { model?.notice = error.localizedDescription } }
+                if let error { DispatchQueue.main.async { [weak model] in model?.notice = error.localizedDescription } }
             }
         case .move:
             guard !moving else { model?.notice = "Wait for the current move to finish."; return }
@@ -70,8 +70,8 @@ final class FileActions {
                 DispatchQueue.global(qos: .userInitiated).async { [weak self] in
                     do {
                         let moved = try FileTransfer.move(urls, to: folder)
-                        DispatchQueue.main.async { self?.moving = false; self?.model?.notice = "Moved \(moved.count) item\(moved.count == 1 ? "" : "s") to \(folder.lastPathComponent)." }
-                    } catch { DispatchQueue.main.async { self?.moving = false; self?.model?.notice = error.localizedDescription } }
+                        DispatchQueue.main.async { [weak self] in self?.moving = false; self?.model?.notice = "Moved \(moved.count) item\(moved.count == 1 ? "" : "s") to \(folder.lastPathComponent)." }
+                    } catch { DispatchQueue.main.async { [weak self] in self?.moving = false; self?.model?.notice = error.localizedDescription } }
                 }
             }
         }

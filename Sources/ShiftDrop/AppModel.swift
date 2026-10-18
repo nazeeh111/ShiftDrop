@@ -169,7 +169,7 @@ final class AppModel: ObservableObject {
             for id in ids {
                 if Task.isCancelled { break }
                 let job: (URL, ConversionFormat)? = await withCheckedContinuation { continuation in
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
                         guard let self, let index = self.items.firstIndex(where: { $0.id == id && $0.state == .ready }) else { continuation.resume(returning: nil); return }
                         self.items[index].state = .running
                         continuation.resume(returning: (self.items[index].input, self.items[index].format))
@@ -180,7 +180,7 @@ final class AppModel: ObservableObject {
                 do {
                     let result = try await engine.convert(input: input, to: format, outputDirectory: destination, options: options)
                     await withCheckedContinuation { continuation in
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.async { [weak self] in
                             if let self, let current = self.items.firstIndex(where: { $0.id == id }) {
                                 self.items[current].result = result
                                 self.items[current].state = .complete
@@ -193,7 +193,7 @@ final class AppModel: ObservableObject {
                     let cancelled = error is CancellationError || Task.isCancelled
                     let message = cancelled ? "Cancelled. You can retry this file." : error.localizedDescription
                     await withCheckedContinuation { continuation in
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.async { [weak self] in
                             if let self, let current = self.items.firstIndex(where: { $0.id == id }) {
                                 self.items[current].state = cancelled ? .cancelled : .failed
                                 self.items[current].message = message
@@ -203,7 +203,7 @@ final class AppModel: ObservableObject {
                     }
                 }
             }
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.running = false; self.task = nil
                 self.backgroundStatus = "\(self.completeCount) complete · \(self.failedCount) need attention"
