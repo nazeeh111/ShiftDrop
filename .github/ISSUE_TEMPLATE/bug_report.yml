@@ -1,0 +1,23 @@
+name: Bug report
+description: Report a reproducible ShiftDrop problem.
+title: "[Bug] "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: ShiftDrop and macOS versions
+      placeholder: ShiftDrop 0.1.1, macOS 26.6.2, Apple silicon
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and result
+      description: Include exact steps, expected behavior, and what happened instead. For drag problems, include modifier settings and whether the manual shelf works.
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Input and optional engines
+      description: File types, approximate sizes, and FFmpeg or LibreOffice versions if relevant. Only attach nonprivate sample files you may share.

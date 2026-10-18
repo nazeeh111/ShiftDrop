@@ -8,7 +8,7 @@ struct ShiftDropApp {
     static func main() {
         let args = Array(CommandLine.arguments.dropFirst())
         if args.first == "--help" {
-            print("ShiftDrop 0.1.0\nOpen app: ShiftDrop\nConvert: ShiftDrop --convert INPUT --to FORMAT --output DIRECTORY\nAvailable formats depend on input. Optional FFmpeg enables media.")
+            print("ShiftDrop 0.1.1\nOpen app: ShiftDrop\nConvert: ShiftDrop --convert INPUT --to FORMAT --output DIRECTORY\nAvailable formats depend on input. Optional FFmpeg enables media.")
             return
         }
         if args.first == "--convert" { runCLI(args); return }
@@ -112,7 +112,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     @objc func showHelp() { showMain(); model.showHelp = true }
     @objc func addFiles() { showMain(); model.chooseFiles() }
     @objc func convertFiles() { model.run() }
-    @objc func about() { NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "ShiftDrop", .applicationVersion: "0.1.0", .credits: NSAttributedString(string: "Files in. Flow out.\nAn offline conversion studio for your Mac.\n© 2026 Nazeeh Abdul-Hadi")]) }
+    @objc func about() { NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "ShiftDrop", .applicationVersion: "0.1.1", .credits: NSAttributedString(string: "Files in. Flow out.\nAn offline conversion studio for your Mac.\n© 2026 Nazeeh Abdul-Hadi")]) }
     @objc func quit() { NSApp.terminate(nil) }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         guard model.running || model.toolsRunning || model.actions.moving else { return .terminateNow }
@@ -139,18 +139,30 @@ enum ShelfMode: String, CaseIterable, Identifiable {
 
 struct ShelfDragGesture {
     private var idlePasteboardChangeCount: Int?
-    private var previousFlags: NSEvent.ModifierFlags = []
+    private var activePasteboardChangeCount: Int?
+    private var deliveredFlags: NSEvent.ModifierFlags = []
 
-    mutating func risingModifiers(mouseDown: Bool, pasteboardChangeCount: Int, flags: NSEvent.ModifierFlags) -> NSEvent.ModifierFlags {
-        defer { previousFlags = flags }
+    mutating func risingModifiers(mouseDown: Bool, pasteboardChangeCount: Int, flags: NSEvent.ModifierFlags, hasFileURLs: Bool = true) -> NSEvent.ModifierFlags {
         if !mouseDown {
             idlePasteboardChangeCount = pasteboardChangeCount
+            activePasteboardChangeCount = nil
+            deliveredFlags = []
             return []
         }
-        // The drag pasteboard retains old URLs after a drop. A new mouse hold alone
-        // is insufficient: its contents must have changed since mouse-up polling.
+        // A mouse hold and old drag URLs are not a new drag. Wait for Finder to
+        // publish fresh contents, without consuming a modifier pressed meanwhile.
         guard let idlePasteboardChangeCount, pasteboardChangeCount != idlePasteboardChangeCount else { return [] }
-        return flags.subtracting(previousFlags)
+        if activePasteboardChangeCount != pasteboardChangeCount {
+            activePasteboardChangeCount = pasteboardChangeCount
+            deliveredFlags = []
+        }
+        // File promises may become readable after the pasteboard count changes.
+        // Remember releases, but deliver a held modifier only once URLs are ready.
+        deliveredFlags.formIntersection(flags)
+        guard hasFileURLs else { return [] }
+        let rising = flags.subtracting(deliveredFlags)
+        deliveredFlags = flags
+        return rising
     }
 }
 
@@ -184,7 +196,10 @@ final class DropShelf {
         let flags = NSEvent.modifierFlags.intersection([.shift, .command, .control, .option])
         let dragging = NSEvent.pressedMouseButtons & 1 != 0
         let pasteboard = NSPasteboard(name: .drag)
-        let risingFlags = gesture.risingModifiers(mouseDown: dragging, pasteboardChangeCount: pasteboard.changeCount, flags: flags)
+        let urls = dragging && !flags.isEmpty
+            ? (pasteboard.readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? [URL]) ?? []
+            : []
+        let risingFlags = gesture.risingModifiers(mouseDown: dragging, pasteboardChangeCount: pasteboard.changeCount, flags: flags, hasFileURLs: !urls.isEmpty)
         if panel.isVisible, !manual {
             if !dragging {
                 if let releasedAt, Date().timeIntervalSince(releasedAt) > 0.6 { hide() }
@@ -194,7 +209,6 @@ final class DropShelf {
         guard model.quickShelf, dragging, Set([model.convertKey, model.toolsKey, model.actionsKey]).count == 3 else { return }
         let mapping: [(ShelfMode, String)] = [(.convert, model.convertKey), (.tools, model.toolsKey), (.actions, model.actionsKey)]
         guard let pair = mapping.first(where: { risingFlags.contains(key($0.1)) }) else { return }
-        let urls = (pasteboard.readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? [URL]) ?? []
         guard !urls.isEmpty else { return }
         show(at: NSEvent.mouseLocation, urls: urls, mode: pair.0, manual: false)
     }

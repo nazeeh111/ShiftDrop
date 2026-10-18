@@ -1,10 +1,10 @@
 # Verification
 
-Release candidate 0.1.0, checked 2026-10-18 on Apple silicon, macOS26.6.2, Swift6.4. macOS13 is the deployment target, not local runtime coverage of every supported OS.
+Release 0.1.1, checked 2026-10-18 on Apple silicon, macOS26.6.2, Swift6.4. macOS13 is the deployment target, not local runtime coverage of every supported OS.
 
 ## Automated checks
 
-The complete production package suite passed **73 tests with zero failures**:64 core and9 app/browser tests. It exercises native conversion, editing engines and app state. Final command: `swift test --scratch-path /private/tmp/shiftdrop-integrated-final`. The final run exercised optional engines with no skipped cases.
+The complete production package suite passed **76 tests with zero failures**:64 core and12 app/browser tests. It exercises native conversion, editing engines and app state. Final command: `swift test --disable-sandbox --scratch-path /private/tmp/shiftdrop-gesture-fix`. The final run exercised optional engines with no skipped cases.
 
 Fixtures decode or reopen generated files. Coverage includes:
 
@@ -25,7 +25,20 @@ A packaged release build was launched through the actual native UI. The earlier 
 
 Expanded app checks opened File Tools, changed image maximum width to640, rendered an actual temporary preview, selected a custom destination with the native file browser, and saved a640×640 JPEG. The crop tool saved a320×240 PNG. Both dimensions were read from the generated files. The compact shelf opened through Command-Shift-D and showed all three workflow tabs and six file actions. Screenshots in assets are captures of running native windows.
 
-The global Finder drag-plus-modifier trigger remains a manual acceptance item. Native automation rejected modifier-only key input, so its end-to-end behavior across Finder, Spaces and multiple displays was not established by automation. Public drag/modifier polling and queue/drop handlers are implemented; this is not a claim that every desktop interaction was observed. AirDrop delivery and launch-at-login registration were not activated during testing.
+### Real Finder drag acceptance, 0.1.1
+
+The user authorized a native system-input driver because background-targeted automation does not update the global mouse-button/modifier state read by this feature. The driver used existing native input/accessibility permissions; it did not request or change permissions. ShiftDrop itself still does not need those permissions for its shelf.
+
+On the same machine, the published 0.1.0 accepted drag-then-Shift but failed when Shift was held before starting the drag. The 0.1.1 packaged app passed the following real Finder checks:
+
+- Two drag-then-Shift and three Shift-before-drag conversions. Each opened the PNG shelf, kept it open after releasing Shift, accepted the file drop, and produced a newly decoded 1024×1024 PNG. The source image's SHA-256 hash was unchanged.
+- Command opened the Tools shelf with the expected image tools; Control opened Actions with all six actions.
+- Escape cancelled Finder's drag and the shelf dismissed after its release timeout.
+- A subsequent ordinary Shift-click with old drag pasteboard contents did not open the shelf.
+
+Six focused state-machine tests also cover late pasteboard publication, file URLs becoming readable after the modifier press, held modifiers, repeated mode changes, release/cancellation, and stale pasteboard rejection. The fix consumes a modifier only when a fresh drag has readable file URLs. This prevents a timing race from losing the gesture.
+
+These are single-display, standard Finder-window checks on the stated host OS. Multiple displays, Spaces/fullscreen transitions, third-party drag sources, AirDrop delivery and launch-at-login registration were not exercised. To repeat manually: drag a nonprivate image from Finder, hold Shift briefly, release Shift, and drop on PNG; then repeat with Shift held before dragging. Check the new output, try Command/Control, cancel another drag with Escape, and verify Shift-clicking afterward leaves the shelf closed.
 
 The host's system file panel stalled in iCloud File Provider, reproduced independently. ShiftDrop uses an in-process native file browser without changing global system settings.
 

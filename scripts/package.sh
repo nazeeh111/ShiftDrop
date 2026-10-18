@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-VERSION="${SHIFTDROP_VERSION:-0.1.0}"
+VERSION="${SHIFTDROP_VERSION:-0.1.1}"
 if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "SHIFTDROP_VERSION must be a three-part numeric version." >&2
   exit 1

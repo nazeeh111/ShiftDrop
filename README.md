@@ -1,11 +1,14 @@
 <p align="center"><img src="assets/AppIcon.png" width="112" alt="ShiftDrop icon"></p>
 <h1 align="center">ShiftDrop</h1>
 <p align="center"><strong>Files in. Flow out.</strong><br>A native file workbench that stays within reach.</p>
-<p align="center"><a href="https://github.com/nazeeh111/ShiftDrop/releases">Mac builds</a> · <a href="#build-from-source">Build from source</a> · <a href="docs/TOOLS.md">Tool guide</a> · <a href="docs/FORMATS.md">Format guide</a></p>
+<p align="center"><a href="https://github.com/nazeeh111/ShiftDrop/releases/latest">Download for Mac</a> · <a href="#build-from-source">Build from source</a> · <a href="docs/TOOLS.md">Tool guide</a> · <a href="docs/FORMATS.md">Format guide</a></p>
+
+[![macOS build](https://github.com/nazeeh111/ShiftDrop/actions/workflows/ci.yml/badge.svg)](https://github.com/nazeeh111/ShiftDrop/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/nazeeh111/ShiftDrop)](https://github.com/nazeeh111/ShiftDrop/releases/latest)
+![macOS 13+](https://img.shields.io/badge/macOS-13%2B-17211B)
+[![MIT license](https://img.shields.io/badge/license-MIT-C8F36A)](LICENSE)
 
 ![ShiftDrop conversion studio](assets/studio.jpg)
-
-![Actual file tool result](assets/tools.jpg)
 
 ShiftDrop lives in your menu bar and opens a full studio when you need controls. Drag files, tap a modifier, and drop onto a format, tool, or file action. Convert a batch, mark up a screenshot, trim a recording, or organize a PDF without opening a web upload form.
 
@@ -13,7 +16,7 @@ The app processes selected files locally using macOS frameworks and optional too
 
 ## Three ways to drop
 
-Start dragging files from Finder, then press a modifier to bring a shelf to your pointer:
+Start dragging files from Finder, then hold a modifier briefly to bring a shelf to your pointer. Holding the modifier before starting a fresh drag also works:
 
 | Default modifier | Shelf | What happens after a drop |
 | --- | --- | --- |
@@ -39,6 +42,8 @@ Open **File → File Tools** or drop onto a tool. The studio shows input order, 
 
 [The tool guide](docs/TOOLS.md) explains coordinates, layers, limits, output types, and controls that change meaning between tools.
 
+![Actual file tool result](assets/tools.jpg)
+
 ## Conversion routes
 
 Native routes cover images, PDF page rendering and selectable text, rich and plain text, Markdown, Finder text clippings, RTFD, EPUB text, subtitles, and archives. Optional FFmpeg adds media codecs and additional image encoders. Installed LibreOffice adds spreadsheet, presentation, and more Office document routes. The app offers formats according to the source type and available local engines. The decoder still validates the actual file when the job runs.
@@ -60,6 +65,14 @@ Conversion and editing create new files. Existing names receive numbered suffixe
 
 The default output folder is `~/Downloads/ShiftDrop`. Conversion history and tool layers are session data. Quality, output folder, shelf keys, and background preferences are stored locally.
 
+## Install
+
+1. Download the ZIP from [the latest release](https://github.com/nazeeh111/ShiftDrop/releases/latest). The prebuilt app is for Apple silicon.
+2. Extract it and move **ShiftDrop.app** into Applications.
+3. Open ShiftDrop. The studio appears on first launch; after that, use the menu bar icon.
+
+The app is ad-hoc signed and **not Apple notarized**, so macOS may block a downloaded build. Source builds are available below. Optional FFmpeg and LibreOffice engines are installed separately.
+
 ## Build from source
 
 Requires macOS 13 or later and an Xcode toolchain with Swift 5.9 or newer. There are no third-party Swift package dependencies.
@@ -80,7 +93,7 @@ Packaged builds are listed under [Releases](https://github.com/nazeeh111/ShiftDr
 
 **FFmpeg:** install a free build with the codecs you need, then reopen ShiftDrop. Discovery checks `PATH`, `/opt/homebrew/bin`, `/usr/local/bin`, `/usr/bin`, and `~/.local/bin`. Codec support depends on that executable. Media tools also need `ffprobe` beside FFmpeg or on `PATH`. FFmpeg is invoked with argument arrays and local input protocols, rather than through a shell.
 
-**LibreOffice:** install the desktop app in `/Applications` or `~/Applications`, or provide `soffice` on `PATH`. Discovery also recognizes the existing Codex dependency override path `~/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice`. Office helpers run with an isolated temporary profile and a macOS sandbox that denies network access; those routes require `/usr/bin/sandbox-exec`. Native text document conversion uses the macOS `textutil` helper under the same offline boundary.
+**LibreOffice:** install the desktop app in `/Applications` or `~/Applications`, or provide `soffice` on `PATH`. Office helpers run with an isolated temporary profile and a macOS sandbox that denies network access; those routes require `/usr/bin/sandbox-exec`. Native text document conversion uses the macOS `textutil` helper under the same offline boundary.
 
 ShiftDrop does not automatically download, install, or bundle either optional executable. Reopen the app after changing installed tools.
 
@@ -99,6 +112,8 @@ Use lowercase enum names for `--to`, such as `jpeg`, `docx`, or `tgz`. The comma
 ## Development and verification
 
 `Sources/ShiftDrop` contains the AppKit/SwiftUI app, drag shelves, queue, file actions, and tool controls. `Sources/ShiftDropCore` contains the conversion engines, editing tools, and safe publication code. Tests generate local fixtures and inspect real outputs. The macOS CI workflow runs tests, packages the app, and uploads a build artifact without creating a release automatically.
+
+For a defect, [open a bug report](https://github.com/nazeeh111/ShiftDrop/issues/new?template=bug_report.yml) with the macOS version, input type, exact steps, and expected result. Avoid attaching private files. See [changes by release](CHANGELOG.md).
 
 Read [verification evidence and remaining coverage](docs/VERIFICATION.md) for checks that actually ran. A supported format or a compiled route is not a promise of identical rendering across codecs, documents, macOS versions, or hardware.
 

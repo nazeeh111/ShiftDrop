@@ -290,7 +290,7 @@ struct SettingsView: View {
             Text("Resizing fits inside this limit and preserves the image's proportions. Smaller images aren't enlarged. PDF pages use a bounded render size.").font(.system(size: 11)).foregroundColor(.muted)
             HStack { VStack(alignment: .leading, spacing: 4) { Text("Output folder").fontWeight(.medium); Text(model.outputDirectory.path).font(.system(size: 11)).foregroundColor(.muted).lineLimit(2).truncationMode(.middle) }; Spacer(); Button("Change…", action: model.chooseOutput) }
             Text("Settings apply to the next batch. Conversion history is kept only for this session.").font(.system(size: 11)).foregroundColor(.muted)
-            HStack { Text("ShiftDrop 0.1.0").font(.system(size: 10, design: .monospaced)).foregroundColor(.muted); Spacer(); ActionButton(title: "Done", symbol: "checkmark", prominent: true) { dismiss() }.keyboardShortcut(.defaultAction) }
+            HStack { Text("ShiftDrop 0.1.1").font(.system(size: 10, design: .monospaced)).foregroundColor(.muted); Spacer(); ActionButton(title: "Done", symbol: "checkmark", prominent: true) { dismiss() }.keyboardShortcut(.defaultAction) }
         }.padding(30) }.frame(width: 600, height: 680).background(Color.paper).foregroundColor(.ink)
     }
 }
@@ -306,7 +306,7 @@ struct HelpView: View {
             helpRow("03", "Convert, then carry on", "Press ⌘ Return to convert. Reveal results in Finder, copy their paths, or retry a failed file. Existing files receive numbered names.")
             Divider()
             Text("The quick shelf").font(.system(size: 14, weight: .semibold))
-            Text("Start dragging a file, then tap Shift for conversions, Command for tools, or Control for actions. Release the key and keep dragging; the shelf stays until you drop or press Escape. Preferences lets you change the keys. A running batch queues new conversions for later. The menu bar and ⌘⇧D also open the shelf.").font(.system(size: 12)).lineSpacing(3)
+            Text("Start dragging a file, then tap Shift for conversions, Command for tools, or Control for actions. Release the key and keep dragging; the shelf stays until you drop or cancel the Finder drag with Escape. Preferences lets you change the keys. A running batch queues new conversions for later. The menu bar and ⌘⇧D also open the shelf.").font(.system(size: 12)).lineSpacing(3)
             Text("Supported routes").font(.system(size: 14, weight: .semibold))
             Text("Native image, PDF, rich text, subtitle and archive routes work locally. FFmpeg and ffprobe enable media tools; LibreOffice enables spreadsheet and presentation conversions. The format menu shows routes available on this Mac. Animated image imports use the first frame for still outputs. PDF document exports reflow selectable text; slide exports use page images, and spreadsheet exports use text rows. Pages documents need Apple Pages, which is not integrated. See the format guide for exact limits.").font(.system(size: 12)).lineSpacing(3)
             HStack { Label("Processed on your Mac. No telemetry.", systemImage: "lock.shield").font(.system(size: 11)).foregroundColor(.muted); Spacer(); ActionButton(title: "Got it", symbol: "checkmark", prominent: true) { dismiss() }.keyboardShortcut(.defaultAction) }
