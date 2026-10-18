@@ -58,7 +58,7 @@ enum ArchiveConversions {
             let status = api.readNext(archive, &entry)
             if status == 1 { break }
             try api.check(status, archive)
-            guard let entry, let namePointer = api.entryPath(entry), let name = String(validatingCString: namePointer) else {
+            guard let entry, let namePointer = api.entryPath(entry), let name = String(validatingUTF8: namePointer) else {
                 throw ConversionError.unsafeArchive("An entry has an invalid filename.")
             }
             count += 1
@@ -78,7 +78,7 @@ enum ArchiveConversions {
             if type == 0o040000 {
                 guard api.entrySize(entry) == 0 else { throw ConversionError.unsafeArchive("An archive directory has unexpected file content.") }
                 if fm.fileExists(atPath: url.path) {
-                    guard (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory == true else { throw ConversionError.unsafeArchive("An entry conflicts with a file.") }
+                    guard (try url.resourceValues(forKeys: [URLResourceKey.isDirectoryKey])).isDirectory == true else { throw ConversionError.unsafeArchive("An entry conflicts with a file.") }
                 } else { try fm.createDirectory(at: url, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700]) }
                 continue
             }
