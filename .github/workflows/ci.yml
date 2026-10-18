@@ -1,0 +1,23 @@
+name: Build and test
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test conversion core
+        run: swift test
+      - name: Package app
+        run: bash scripts/package.sh
+      - name: Upload app archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShiftDrop-macOS
+          path: dist/ShiftDrop-*-macOS.zip
+          if-no-files-found: error
