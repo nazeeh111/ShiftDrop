@@ -3,9 +3,9 @@
 <p align="center"><strong>Files in. Flow out.</strong><br>A native file workbench that stays within reach.</p>
 <p align="center"><a href="https://github.com/nazeeh111/ShiftDrop/releases">Mac builds</a> · <a href="#build-from-source">Build from source</a> · <a href="docs/TOOLS.md">Tool guide</a> · <a href="docs/FORMATS.md">Format guide</a></p>
 
-![ShiftDrop conversion studio](assets/studio.png)
+![ShiftDrop conversion studio](assets/studio.jpg)
 
-![Actual file tool result](assets/tools.png)
+![Actual file tool result](assets/tools.jpg)
 
 ShiftDrop lives in your menu bar and opens a full studio when you need controls. Drag files, tap a modifier, and drop onto a format, tool, or file action. Convert a batch, mark up a screenshot, trim a recording, or organize a PDF without opening a web upload form.
 

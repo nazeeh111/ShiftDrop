@@ -13,8 +13,11 @@ final class ToolStudioController: NSObject, NSWindowDelegate {
         model = ToolStudioModel(inputs: inputs, tool: tool, destination: destination)
         super.init()
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1060, height: 760), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
-        window.title = "ShiftDrop · File tools"; window.minSize = NSSize(width: 960, height: 650); window.isReleasedWhenClosed = false; window.delegate = self
-        window.contentView = NSHostingView(rootView: ToolStudioView(model: model)); window.center(); show()
+        window.title = "ShiftDrop · File tools"; window.isReleasedWhenClosed = false; window.delegate = self
+        // Keep source image dimensions from becoming the window's preferred size.
+        let hosting = NSHostingView(rootView: GeometryReader { [model = self.model] _ in ToolStudioView(model: model) })
+        hosting.sizingOptions = []
+        window.contentView = hosting; window.minSize = NSSize(width: 960, height: 650); window.setContentSize(NSSize(width: 1060, height: 760)); window.center(); show()
     }
     func show() { window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true) }
     func close() { if !model.running { window.close() } }
@@ -303,7 +306,7 @@ struct FilePreview: View, Equatable {
     var body: some View {
         Group {
             if let url {
-                if let image = thumbnail(url) { Image(nsImage: image).resizable().scaledToFit().padding(12) }
+                if let image = thumbnail(url) { GeometryReader { geometry in Image(nsImage: image).resizable().scaledToFit().frame(width: max(1, geometry.size.width - 24), height: max(1, geometry.size.height - 24)).padding(12) } }
                 else if url.pathExtension.lowercased() == "pdf" { PDFPreview(url: url) }
                 else if ["Video", "Audio"].contains(FormatCatalog.kind(for: url)) { VideoPlayer(player: AVPlayer(url: url)).id(url) }
                 else if url.pathExtension.lowercased() == "json" { MetadataReportPreview(url: url) }

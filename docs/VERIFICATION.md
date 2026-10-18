@@ -4,7 +4,7 @@ Release candidate 0.1.0, checked 2026-10-18 on Apple silicon, macOS26.6.2, Swift
 
 ## Automated checks
 
-The complete production package suite passed **70 tests with zero failures**:64 core and6 app/browser tests. It exercises native conversion, editing engines and app state. Final command: `swift test --scratch-path /private/tmp/shiftdrop-integrated-final`. The final run exercised optional engines with no skipped cases.
+The complete production package suite passed **73 tests with zero failures**:64 core and9 app/browser tests. It exercises native conversion, editing engines and app state. Final command: `swift test --scratch-path /private/tmp/shiftdrop-integrated-final`. The final run exercised optional engines with no skipped cases.
 
 Fixtures decode or reopen generated files. Coverage includes:
 
@@ -13,7 +13,7 @@ Fixtures decode or reopen generated files. Coverage includes:
 - Native DOC/DOCX/ODT/RTFD, real Finder resource-fork clippings, Markdown/EPUB, PDF-derived OOXML reopened by LibreOffice, and LibreOffice-produced spreadsheet/presentation conversions. Fidelity limits remain in the format guide.
 - FFmpeg output decoding, media speed/pitch, mixed silent joins, precise trim/split/snapshots, timed covers/blur, channel gains, bleeps, waveform/static backgrounds, and measured loudness reports.
 - Archive traversal/link/duplicate/expansion rejection, extraction and repacking; no source-directory mutation when rejecting nested destinations; filename collision concurrency, source preservation, cancellation and bounded subprocess diagnostics.
-- Queue scopes, automatic busy-drop continuation, cancelling pending work, current per-file formats, duplicate handling, quiet drops and file-browser navigation.
+- Queue scopes, automatic busy-drop continuation, cancelling pending work, current per-file formats, duplicate handling, quiet drops, file-browser navigation and fresh-drag state that rejects stale pasteboard data during ordinary modifier-clicks.
 
 The full test run uses installed FFmpeg/ffprobe and LibreOffice, so optional-engine cases were exercised rather than merely counted as skipped. Specific fixture success does not establish arbitrary codec/document compatibility.
 

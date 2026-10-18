@@ -137,13 +137,30 @@ enum ShelfMode: String, CaseIterable, Identifiable {
     var title: String { switch self { case .convert: return "Convert"; case .tools: return "Tools"; case .actions: return "Actions" } }
 }
 
+struct ShelfDragGesture {
+    private var idlePasteboardChangeCount: Int?
+    private var previousFlags: NSEvent.ModifierFlags = []
+
+    mutating func risingModifiers(mouseDown: Bool, pasteboardChangeCount: Int, flags: NSEvent.ModifierFlags) -> NSEvent.ModifierFlags {
+        defer { previousFlags = flags }
+        if !mouseDown {
+            idlePasteboardChangeCount = pasteboardChangeCount
+            return []
+        }
+        // The drag pasteboard retains old URLs after a drop. A new mouse hold alone
+        // is insufficient: its contents must have changed since mouse-up polling.
+        guard let idlePasteboardChangeCount, pasteboardChangeCount != idlePasteboardChangeCount else { return [] }
+        return flags.subtracting(previousFlags)
+    }
+}
+
 @MainActor
 final class DropShelf {
     private let panel: NSPanel
     private let model: AppModel
     private var timer: Timer?
     private var localKeys: Any?
-    private var previousFlags: NSEvent.ModifierFlags = []
+    private var gesture = ShelfDragGesture()
     private var manual = false
     private var releasedAt: Date?
     init(model: AppModel) {
@@ -166,7 +183,8 @@ final class DropShelf {
     private func poll() {
         let flags = NSEvent.modifierFlags.intersection([.shift, .command, .control, .option])
         let dragging = NSEvent.pressedMouseButtons & 1 != 0
-        defer { previousFlags = flags }
+        let pasteboard = NSPasteboard(name: .drag)
+        let risingFlags = gesture.risingModifiers(mouseDown: dragging, pasteboardChangeCount: pasteboard.changeCount, flags: flags)
         if panel.isVisible, !manual {
             if !dragging {
                 if let releasedAt, Date().timeIntervalSince(releasedAt) > 0.6 { hide() }
@@ -175,8 +193,8 @@ final class DropShelf {
         }
         guard model.quickShelf, dragging, Set([model.convertKey, model.toolsKey, model.actionsKey]).count == 3 else { return }
         let mapping: [(ShelfMode, String)] = [(.convert, model.convertKey), (.tools, model.toolsKey), (.actions, model.actionsKey)]
-        guard let pair = mapping.first(where: { flags.contains(key($0.1)) && !previousFlags.contains(key($0.1)) }) else { return }
-        let urls = (NSPasteboard(name: .drag).readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? [URL]) ?? []
+        guard let pair = mapping.first(where: { risingFlags.contains(key($0.1)) }) else { return }
+        let urls = (pasteboard.readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? [URL]) ?? []
         guard !urls.isEmpty else { return }
         show(at: NSEvent.mouseLocation, urls: urls, mode: pair.0, manual: false)
     }
