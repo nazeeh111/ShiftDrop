@@ -24,6 +24,8 @@ Start dragging files from Finder, then hold a modifier briefly to bring a shelf 
 | Command | Tools | Open that tool with the dropped files and its controls. |
 | Control | Actions | Choose AirDrop, Float, Copy files, Move, Copy paths, or Terminal. |
 
+![ShiftDrop action shelf with AirDrop, Float, Copy files, Move, Copy paths, and Terminal](assets/shelf.jpg)
+
 Change the three keys independently in Preferences. Each workflow needs a distinct key. The menu bar and **File → Show Drop Shelf** also open the shelf manually. Shortcuts read public drag and modifier state; the app does not request Accessibility or Input Monitoring access for this feature.
 
 Quick conversions work in the background. A drop during an active conversion is queued automatically and runs after that batch. The studio keeps per-file formats, errors, retry controls, output paths, elapsed time, and a session history. Settings are captured when a batch starts.
