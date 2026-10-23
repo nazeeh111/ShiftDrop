@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">ShiftDrop</title><desc id="desc">Stacked files with a lime conveyor arrow turning down and right.</desc>
+  <rect x="32" y="32" width="960" height="960" rx="214" fill="#17211B"/>
+  <rect x="354" y="263" width="390" height="462" rx="48" fill="#D0FA6B"/>
+  <rect x="238" y="173" width="390" height="462" rx="48" fill="#F5F4ED"/>
+  <g fill="#17211B"><rect x="302" y="262" width="216" height="27" rx="13.5"/><rect x="302" y="327" width="166" height="27" rx="13.5"/></g>
+  <path d="M302 421h88v281h260v-82l160 126-160 126v-82H302Z" fill="#D0FA6B"/>
+  <rect x="422" y="666" width="178" height="26" rx="13" fill="#17211B"/>
+</svg>

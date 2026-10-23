@@ -21,37 +21,39 @@ final class AppModel: ObservableObject {
     @Published var running = false
     @Published var filter = "All files"
     @Published var notice: String?
-    @Published var showSettings = false
-    @Published var showHelp = false
+    @Published var saveBesideOriginals: Bool {
+        didSet { defaults.set(saveBesideOriginals, forKey: "saveBesideOriginals") }
+    }
     @Published var outputDirectory: URL {
-        didSet { UserDefaults.standard.set(outputDirectory.path, forKey: "outputDirectory") }
+        didSet { defaults.set(outputDirectory.path, forKey: "outputDirectory") }
     }
     @Published var quality: Double {
-        didSet { UserDefaults.standard.set(quality, forKey: "quality") }
+        didSet { defaults.set(quality, forKey: "quality") }
     }
     @Published var maxPixelSize = 0
     @Published var quickShelf: Bool {
-        didSet { UserDefaults.standard.set(quickShelf, forKey: "quickShelf") }
+        didSet { defaults.set(quickShelf, forKey: "quickShelf") }
     }
-    @Published var backgroundMode: Bool {
-        didSet { UserDefaults.standard.set(backgroundMode, forKey: "backgroundMode") }
-    }
-    @Published var convertKey: String { didSet { UserDefaults.standard.set(convertKey, forKey: "convertKey") } }
-    @Published var toolsKey: String { didSet { UserDefaults.standard.set(toolsKey, forKey: "toolsKey") } }
-    @Published var actionsKey: String { didSet { UserDefaults.standard.set(actionsKey, forKey: "actionsKey") } }
+    @Published var convertKey: String { didSet { defaults.set(convertKey, forKey: "convertKey") } }
+    @Published var toolsKey: String { didSet { defaults.set(toolsKey, forKey: "toolsKey") } }
+    @Published var actionsKey: String { didSet { defaults.set(actionsKey, forKey: "actionsKey") } }
     @Published var loginEnabled = SMAppService.mainApp.status == .enabled
     lazy var actions = FileActions(model: self)
     private var toolStudio: ToolStudioController?
+    private let defaults: UserDefaults
     private let engine = ConversionEngine()
     private var task: Task<Void, Never>?
     private var pendingQuickIDs: [UUID] = []
-    @Published var backgroundStatus: String?
+    @Published var backgroundStatus: String? {
+        didSet { if let backgroundStatus { onStatus?(backgroundStatus) } }
+    }
+    var onStatus: ((String) -> Void)?
     private var fileChooser: FileChooserController?
     var showWindow: (() -> Void)?
 
-    init() {
-        let defaults = UserDefaults.standard
-        backgroundMode = defaults.object(forKey: "backgroundMode") == nil ? true : defaults.bool(forKey: "backgroundMode")
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        saveBesideOriginals = defaults.object(forKey: "saveBesideOriginals") == nil ? true : defaults.bool(forKey: "saveBesideOriginals")
         convertKey = defaults.string(forKey: "convertKey") ?? "shift"
         toolsKey = defaults.string(forKey: "toolsKey") ?? "command"
         actionsKey = defaults.string(forKey: "actionsKey") ?? "control"
@@ -95,7 +97,8 @@ final class AppModel: ObservableObject {
         filter = "All files"
         if skipped > 0 { notice = "Added \(added). Skipped \(skipped) duplicate or unsupported file\(skipped == 1 ? "" : "s")." }
         else if added > 0 { notice = nil }
-        if reveal || (added == 0 && skipped > 0) { showWindow?() }
+        if reveal { showWindow?() }
+        if !reveal, skipped > 0, let notice { backgroundStatus = notice }
         if start && added > 0 {
             if running { pendingQuickIDs += addedIDs; backgroundStatus = "Quick drop queued. It will run after the active batch."; if !reveal { notice = nil } }
             else { run(only: addedIDs) }
@@ -108,8 +111,16 @@ final class AppModel: ObservableObject {
         if let toolStudio, toolStudio.model.running { toolStudio.show(); notice = "Finish or cancel the current tool operation first."; return }
         let files = urls ?? items.filter { $0.state == .ready }.map(\.input)
         toolStudio?.close()
-        toolStudio = ToolStudioController(inputs: files, tool: tool, destination: outputDirectory)
+        toolStudio = ToolStudioController(inputs: files, tool: tool, destination: toolDestination(for: files), outputBesideInputs: saveBesideOriginals)
     }
+    func destinationDirectory(for input: URL) -> URL {
+        saveBesideOriginals ? input.deletingLastPathComponent() : outputDirectory
+    }
+
+    func toolDestination(for inputs: [URL]) -> URL {
+        inputs.first.map { destinationDirectory(for: $0) } ?? outputDirectory
+    }
+
     func setLogin(_ enabled: Bool) {
         do {
             if enabled { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
@@ -128,7 +139,10 @@ final class AppModel: ObservableObject {
     func chooseOutput() {
         fileChooser?.close()
         fileChooser = FileChooserController(directory: outputDirectory, foldersOnly: true) { [weak self] urls in
-            if let url = urls.first { self?.outputDirectory = url }
+            if let url = urls.first {
+                self?.outputDirectory = url
+                self?.saveBesideOriginals = false
+            }
         }
     }
 
@@ -160,7 +174,8 @@ final class AppModel: ObservableObject {
         guard !running, readyCount > 0 else { return }
         let ids = items.filter { $0.state == .ready && (selectedIDs == nil || selectedIDs!.contains($0.id)) }.map(\.id)
         guard !ids.isEmpty else { return }
-        let destination = outputDirectory
+        let customDestination = outputDirectory
+        let besideOriginals = saveBesideOriginals
         let options = ConversionOptions(quality: quality, maxPixelSize: maxPixelSize == 0 ? nil : maxPixelSize)
         running = true
         notice = nil
@@ -178,7 +193,7 @@ final class AppModel: ObservableObject {
                 guard let (input, format) = job else { continue }
                 let began = Date()
                 do {
-                    let result = try await engine.convert(input: input, to: format, outputDirectory: destination, options: options)
+                    let result = try await engine.convert(input: input, to: format, outputDirectory: besideOriginals ? input.deletingLastPathComponent() : customDestination, options: options)
                     await withCheckedContinuation { continuation in
                         DispatchQueue.main.async { [weak self] in
                             if let self, let current = self.items.firstIndex(where: { $0.id == id }) {
@@ -222,7 +237,9 @@ final class AppModel: ObservableObject {
         notice = "Copied file path\((item.result?.outputURLs.count ?? 1) > 1 ? "s" : "")."
     }
     func showOutputFolder() {
-        if FileManager.default.fileExists(atPath: outputDirectory.path) { NSWorkspace.shared.open(outputDirectory) }
+        let destination = saveBesideOriginals ? items.last.map { destinationDirectory(for: $0.input) } : outputDirectory
+        guard let destination else { notice = "Drop a file to reveal its output folder."; return }
+        if FileManager.default.fileExists(atPath: destination.path) { NSWorkspace.shared.open(destination) }
         else { notice = "Your output folder will be created when the first conversion runs." }
     }
     static func bytes(_ count: Int64) -> String { ByteCountFormatter.string(fromByteCount: count, countStyle: .file) }

@@ -9,8 +9,8 @@ import ShiftDropCore
 final class ToolStudioController: NSObject, NSWindowDelegate {
     let model: ToolStudioModel
     private var window: NSWindow!
-    init(inputs: [URL], tool: FileTool?, destination: URL) {
-        model = ToolStudioModel(inputs: inputs, tool: tool, destination: destination)
+    init(inputs: [URL], tool: FileTool?, destination: URL, outputBesideInputs: Bool = false) {
+        model = ToolStudioModel(inputs: inputs, tool: tool, destination: destination, outputBesideInputs: outputBesideInputs)
         super.init()
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1060, height: 760), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
         window.title = "ShiftDrop · File tools"; window.isReleasedWhenClosed = false; window.delegate = self
@@ -34,6 +34,7 @@ final class ToolStudioModel: ObservableObject {
         didSet { if !running { output = []; showingResult = false } }
     }
     @Published var selectedOutput = 0
+    @Published var outputBesideInputs: Bool
     @Published var destination: URL
     @Published var running = false
     @Published var message: String?
@@ -44,7 +45,8 @@ final class ToolStudioModel: ObservableObject {
     private var chooser: FileChooserController?
     private var previewDirectory: URL?
     var available: [FileTool] { FileTool.available(for: inputs) }
-    init(inputs: [URL], tool: FileTool?, destination: URL) {
+    init(inputs: [URL], tool: FileTool?, destination: URL, outputBesideInputs: Bool = false) {
+        self.outputBesideInputs = outputBesideInputs
         self.inputs = inputs; self.tool = tool ?? FileTool.available(for: inputs).first ?? .compress; self.destination = destination
         resetDefaults()
     }
@@ -79,8 +81,16 @@ final class ToolStudioModel: ObservableObject {
     func chooseInputs() {
         chooser = FileChooserController(directory: inputs.first?.deletingLastPathComponent() ?? FileManager.default.homeDirectoryForCurrentUser, foldersOnly: false) { [weak self] in self?.add($0) }
     }
+    var destinationDescription: String {
+        guard outputBesideInputs else { return destination.path }
+        if tool.requiresMultiple { return "Beside the first source: " + (inputs.first?.deletingLastPathComponent().path ?? "Choose a source") }
+        return "Beside each original file"
+    }
     func chooseDestination() {
-        chooser = FileChooserController(directory: destination, foldersOnly: true) { [weak self] in if let url = $0.first { self?.destination = url } }
+        let directory = outputBesideInputs ? inputs.first?.deletingLastPathComponent() ?? destination : destination
+        chooser = FileChooserController(directory: directory, foldersOnly: true) { [weak self] in
+            if let url = $0.first { self?.destination = url; self?.outputBesideInputs = false }
+        }
     }
     func chooseBackground() {
         chooser = FileChooserController(directory: inputs.first?.deletingLastPathComponent() ?? FileManager.default.homeDirectoryForCurrentUser, foldersOnly: false) { [weak self] in if let url = $0.first { self?.settings.backgroundImage = url } }
@@ -96,7 +106,7 @@ final class ToolStudioModel: ObservableObject {
             let scratch = FileManager.default.temporaryDirectory.appendingPathComponent("shiftdrop-preview-\(UUID().uuidString)", isDirectory: true)
             previewDirectory = scratch; directory = scratch
         } else { directory = destination }
-        let request = ToolRequest(tool: tool, inputs: inputs, outputDirectory: directory, settings: settings)
+        let request = ToolRequest(tool: tool, inputs: inputs, outputDirectory: directory, settings: settings, outputBesideInputs: !preview && outputBesideInputs)
         running = true; message = nil; self.preview = preview; output = []; showingResult = false; selectedOutput = 0
         task = Task.detached(priority: .userInitiated) { [weak self] in
             do {
@@ -163,7 +173,7 @@ struct ToolStudioView: View {
                         ToolSettingsView(tool: model.tool, settings: $model.settings, chooseBackground: model.chooseBackground)
                         Divider()
                         Text("SAVE TO").font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(1).foregroundColor(.muted)
-                        Text(model.destination.path).font(.system(size: 10)).lineLimit(3).truncationMode(.middle).textSelection(.enabled)
+                        Text(model.destinationDescription).font(.system(size: 10)).lineLimit(3).truncationMode(.middle).textSelection(.enabled)
                         Button("Change folder…", action: model.chooseDestination)
                     }.font(.system(size: 12)).padding(20)
                 }.frame(width: 290).disabled(model.running)

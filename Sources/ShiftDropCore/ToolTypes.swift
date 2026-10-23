@@ -151,8 +151,11 @@ public struct ToolRequest: Sendable {
     public var inputs: [URL]
     public var outputDirectory: URL
     public var settings: ToolSettings
-    public init(tool: FileTool, inputs: [URL], outputDirectory: URL, settings: ToolSettings = ToolSettings()) {
+    /// Per-input tools save beside each source; combined tools use the first source parent.
+    public var outputBesideInputs: Bool
+    public init(tool: FileTool, inputs: [URL], outputDirectory: URL, settings: ToolSettings = ToolSettings(), outputBesideInputs: Bool = false) {
         self.tool = tool; self.inputs = inputs; self.outputDirectory = outputDirectory; self.settings = settings
+        self.outputBesideInputs = outputBesideInputs
     }
 }
 

@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
-      - name: Test conversion core
+      - name: Test engines and utility
         run: swift test
       - name: Package app
         run: bash scripts/package.sh

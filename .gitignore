@@ -5,3 +5,4 @@ dist/
 assets/AppIcon.iconset/
 *.xcuserstate
 xcuserdata/
+brag-output*/

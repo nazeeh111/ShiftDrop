@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 · 2026-10-22
+
+- Rebuilt the normal interaction around Finder: quiet first launch/relaunch, no Dock icon, no dashboard.
+- Replaced the rectangular shelf with a native radial wheel at the pointer. Format, tool and action sectors share drawing/hit-test geometry, with a safe center and two rings for longer lists.
+- Converted copies save beside each original by default; custom output folders remain available.
+- Added compact job progress/results and independent Settings/Guide windows; editors open only on demand.
+- Preserved background queueing, cancellation and collision-safe new output.
+- Verified real Finder gestures in both key orders, adjacent JPEG copies, tool-editor drops, cancellation and stale-drag rejection; added radial accessibility and mixed-folder placement coverage.
+
+
 ## 0.1.1 · 2026-10-18
 
 - Fixed missed drag shortcuts when the modifier arrives before Finder publishes fresh drag data or before file URLs become readable.

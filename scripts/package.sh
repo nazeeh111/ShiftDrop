@@ -3,7 +3,12 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-VERSION="${SHIFTDROP_VERSION:-0.1.1}"
+VERSION="${SHIFTDROP_VERSION:-0.2.0}"
+BUILD_JOBS="${SHIFTDROP_BUILD_JOBS:-2}"
+if [[ ! "$BUILD_JOBS" =~ ^[1-9][0-9]*$ ]] || (( BUILD_JOBS > 64 )); then
+  echo "SHIFTDROP_BUILD_JOBS must be between 1 and 64." >&2
+  exit 1
+fi
 if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "SHIFTDROP_VERSION must be a three-part numeric version." >&2
   exit 1
@@ -14,8 +19,8 @@ fi
 STAGING="$(mktemp -d "${TMPDIR:-/tmp}/shiftdrop-package.XXXXXX")"
 trap 'rm -rf "$STAGING"' EXIT
 # Stage outside cloud-synced folders so Finder metadata cannot break signing.
-swift build -c release --scratch-path "$STAGING/build"
-BIN_PATH="$(swift build -c release --scratch-path "$STAGING/build" --show-bin-path)"
+swift build -c release --jobs "$BUILD_JOBS" --scratch-path "$STAGING/build"
+BIN_PATH="$(swift build -c release --jobs "$BUILD_JOBS" --scratch-path "$STAGING/build" --show-bin-path)"
 APP="$STAGING/ShiftDrop.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN_PATH/ShiftDrop" "$APP/Contents/MacOS/ShiftDrop"
@@ -35,7 +40,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>NSPrincipalClass</key><string>NSApplication</string>
   <key>LSMinimumSystemVersion</key><string>13.0</string>
   <key>NSHighResolutionCapable</key><true/>
-  <key>LSUIElement</key><false/>
+  <key>LSUIElement</key><true/>
   <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Nazeeh Abdul-Hadi</string>
   <key>CFBundleDocumentTypes</key><array><dict>
     <key>CFBundleTypeName</key><string>Convertible media</string>

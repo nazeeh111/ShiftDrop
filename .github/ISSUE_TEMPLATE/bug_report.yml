@@ -13,7 +13,7 @@ body:
     id: reproduce
     attributes:
       label: Steps and result
-      description: Include exact steps, expected behavior, and what happened instead. For drag problems, include modifier settings and whether the manual shelf works.
+      description: Include exact steps, expected behavior, and what happened instead. For drag problems, include modifier settings and whether the manual wheel works.
     validations:
       required: true
   - type: textarea

@@ -1,6 +1,8 @@
 # ShiftDrop tool guide
 
-Tools produce new copies. Open File Tools from the menu bar, the File menu, or a Tools shelf drop. Add files, choose a compatible tool, arrange input order when combining, then render a preview before saving a copy.
+Choose tools from the Command wheel while dragging in Finder, or from the menu bar. A selected tool opens its editor; ShiftDrop otherwise remains a quiet menu bar utility. Individual saved copies default to each source's folder. Combined results (collages, image PDFs, joined video and merged PDFs) use the first source's folder. Preview stays temporary; choosing another destination selects custom-folder mode.
+
+Tools produce new copies. Add files, choose a compatible tool, arrange input order when combining, then render a preview before saving a copy.
 
 A rendered preview is actual output in a temporary directory, not a drawing of a proposed result. Saving runs the same operation in the destination folder. Changing settings clears the displayed result. Use Show original/Show result, media playback, or the text report to inspect it. Preview work can take as long as an export; Cancel stops the active task and cleans up unfinished output.
 
@@ -83,7 +85,7 @@ PDF tools use PDFKit and Core Graphics, accepting 1–32 readable, unlocked PDFs
 
 ## Other files, actions, and safety
 
-General Compress creates ZIP output. General Metadata writes filesystem information such as name, bytes, dates, and type; it does not edit or sanitize arbitrary file contents. Converting archive formats and extracting them belong to the main conversion queue; see the format guide for supported readers and bounded extraction.
+General Compress creates ZIP output. General Metadata writes filesystem information such as name, bytes, dates, and type; it does not edit or sanitize arbitrary file contents. Converting archive formats and extracting them use the Convert wheel; see the format guide for supported readers and bounded extraction.
 
 AirDrop, Float, Copy files, Move, Copy paths, and Terminal are file actions rather than converters. Move relocates originals only after its confirmation dialog. The others use references, clipboard data, system sharing, or containing folders. Removing an item from the queue or floating shelf does not remove its source file.
 
