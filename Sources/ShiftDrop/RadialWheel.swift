@@ -1,4 +1,5 @@
 import AppKit
+import Darwin
 import ShiftDropCore
 
 /// Pointer geometry is shared by drawing, hit testing and accessibility.
@@ -13,13 +14,14 @@ struct RadialWheelLayout {
         let span: Double
         var center: CGPoint {
             let r = (inner + outer) / 2
-            return CGPoint(x: 240 + sin(angle) * r, y: 240 - cos(angle) * r)
+            return CGPoint(x: 240 + CGFloat(Darwin.sin(angle)) * r, y: 240 - CGFloat(Darwin.cos(angle)) * r)
         }
         func contains(_ point: CGPoint) -> Bool {
             let dx = point.x - 240, dy = point.y - 240
             let radius = hypot(dx, dy)
             guard radius >= inner, radius <= outer else { return false }
-            let delta = atan2(sin(atan2(dx, -dy) - angle), cos(atan2(dx, -dy) - angle))
+            let offset = Darwin.atan2(Double(dx), Double(-dy)) - angle
+            let delta = Darwin.atan2(Darwin.sin(offset), Darwin.cos(offset))
             return abs(delta) <= span / 2 - 0.015
         }
     }
@@ -54,11 +56,12 @@ enum WheelChoice {
     }
 }
 
-@MainActor
 private final class WheelAccessibilityTarget: NSAccessibilityElement {
-    var press: (() -> Void)?
+    var press: (@MainActor () -> Void)?
     override func accessibilityPerformPress() -> Bool {
-        guard let press else { return false }; press(); return true
+        MainActor.assumeIsolated {
+            guard let press else { return false }; press(); return true
+        }
     }
 }
 
@@ -108,12 +111,12 @@ final class RadialWheelView: NSView {
             let end = sector.angle + sector.span / 2 - 0.015
             for step in 0...32 {
                 let angle = start + (end - start) * Double(step) / 32
-                let point = CGPoint(x: 240 + sin(angle) * sector.outer, y: 240 - cos(angle) * sector.outer)
+                let point = CGPoint(x: 240 + CGFloat(Darwin.sin(angle)) * sector.outer, y: 240 - CGFloat(Darwin.cos(angle)) * sector.outer)
                 if step == 0 { path.move(to: point) } else { path.line(to: point) }
             }
             for step in (0...32).reversed() {
                 let angle = start + (end - start) * Double(step) / 32
-                path.line(to: CGPoint(x: 240 + sin(angle) * sector.inner, y: 240 - cos(angle) * sector.inner))
+                path.line(to: CGPoint(x: 240 + CGFloat(Darwin.sin(angle)) * sector.inner, y: 240 - CGFloat(Darwin.cos(angle)) * sector.inner))
             }
             path.close()
             let selected = highlighted == sector.index
