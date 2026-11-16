@@ -6,8 +6,12 @@ enum TextConversions {
         let size = try input.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
         guard size <= 32 * 1024 * 1024 else { throw ConversionError.invalidInput("Text imports are limited to 32 MB.") }
         let data = try Data(contentsOf: input)
+        try convert(data, inputExtension: input.pathExtension.lowercased(), destination: destination, format: format)
+    }
+
+    static func convert(_ data: Data, inputExtension ext: String, destination: URL, format: ConversionFormat) throws {
+        guard data.count <= 32 * 1024 * 1024 else { throw ConversionError.invalidInput("Text imports are limited to 32 MB.") }
         try Task.checkCancellation()
-        let ext = input.pathExtension.lowercased()
         if ext == "srt" || ext == "vtt" {
             let cues = try SubtitleDocument.parse(try decode(data), webVTT: ext == "vtt")
             let output: String

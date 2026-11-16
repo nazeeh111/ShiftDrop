@@ -104,3 +104,21 @@ Use lowercase format names such as `jpeg`, `docx` or `tgz`. It prints result pat
 [Report a reproducible bug](https://github.com/nazeeh111/ShiftDrop/issues/new?template=bug_report.yml) with the utility/macOS versions, exact steps, expected result and input type. Share only nonprivate sample files. CI runs the test suite and packages a build; release checks are documented separately.
 
 Original Swift source and graphics use the [MIT license](LICENSE). Apple frameworks/SF Symbols and optional FFmpeg/LibreOffice retain their respective terms. Optional executables are not redistributed. Presentation audio credits are supplied with the demo.
+
+### Resumable conversion batches
+
+ShiftDrop saves the conversion queue under its application-support `ShiftDrop/Queue` directory. That directory contains source paths, captured source bytes for recoverable jobs, staged output and receipts; treat it as private. Opening the app does not automatically run interrupted jobs or silently reacquire file permissions. Review an interrupted job and choose Retry after restoring access. The saved paths are not security-scoped bookmarks.
+
+Recoverable jobs use bounded regular inputs and a single regular output of at most 32 MiB. Text, subtitle and native image conversions consume the captured bytes directly. Other single-file converters use an exclusively owned private snapshot and check its identity before and after conversion; a malicious change-and-restore during conversion is outside that check. Inputs are checked again before a new publication. The queue and destination must be on the same volume for exclusive hard-link publication. An existing name is never replaced; a numbered name is selected and recorded before publication. Reopening reconciles a previously published output only when it is the same file as the retained stage and matches its saved digest. Stages are retained as recovery evidence and consume disk space; completed outputs can be verified without trusting a filename alone.
+
+Directory inputs, directory or multi-file outputs, and inputs over 32 MiB remain available as explicitly labeled one-shot operations. Interrupted one-shot jobs cannot be retried automatically: inspect the destination and create a new job. Their output paths and staging cleanup are not independently verified after restart. File Tools also remain one-shot and are not resumed. Original inputs are never intentionally deleted. When rollback cannot safely verify an output or cleanup fails, the path is retained and reported. Cleanup checks assume stable parent directories and are not a hostile-filesystem sandbox.
+
+The headless batch commands use the same queue owner:
+
+```sh
+ShiftDrop --batch-new /path/to/new-session /path/to/output vtt /path/to/input.srt
+ShiftDrop --batch-status /path/to/new-session
+ShiftDrop --batch-resume /path/to/new-session /path/to/output
+```
+
+A session path for `--batch-new` must not already exist. Resume is explicit; completed recoverable outputs are checked, and an interrupted one-shot job is not repeated. A failed planning step may leave already-added jobs in the new session for inspection. No durable handoff to another machine or automatic restoration of sandbox authority is claimed.

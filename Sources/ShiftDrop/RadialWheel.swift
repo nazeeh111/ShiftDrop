@@ -84,7 +84,11 @@ final class RadialWheelView: NSView {
         layout = RadialWheelLayout(count: choices.count)
         super.init(frame: NSRect(x: 0, y: 0, width: 480, height: 480))
         registerForDraggedTypes([.fileURL, NSPasteboard.PasteboardType("NSFilenamesPboardType")])
-        setAccessibilityRole(.group); setAccessibilityLabel("ShiftDrop " + mode.title + " wheel")
+        setAccessibilityElement(true)
+        setAccessibilityRole(.group)
+        let context = inputs.isEmpty ? "Drop Finder files" : inputs.map(\.lastPathComponent).joined(separator: ", ")
+        let explanation = choices.isEmpty ? ". No compatible formats" : ""
+        setAccessibilityLabel("ShiftDrop " + mode.title + " wheel" + explanation + ". " + context)
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) is unavailable") }
     override func viewDidMoveToWindow() { super.viewDidMoveToWindow(); rebuildAccessibility() }
@@ -93,6 +97,8 @@ final class RadialWheelView: NSView {
             let element = WheelAccessibilityTarget()
             element.press = { [weak self] in guard let self else { return }; self.choose(self.choices[sector.index]) }
             element.setAccessibilityRole(.button)
+            // Every supplied choice has an action; incompatible choices are filtered by the caller.
+            element.setAccessibilityEnabled(true)
             element.setAccessibilityLabel("Drop files: " + choices[sector.index].title)
             element.setAccessibilityParent(self)
             element.setAccessibilityFrameInParentSpace(NSRect(x: sector.center.x - 29, y: 480 - sector.center.y - 24, width: 58, height: 48))

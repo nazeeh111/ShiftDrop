@@ -168,18 +168,18 @@ public enum ToolOutput {
         return staging
     }
     public static func publish(_ staged: [URL], request: ToolRequest) throws -> ConversionResult {
-        var outputs: [URL] = []
+        var outputs: [PublishedOutput] = []
         do {
             for (index, url) in staged.enumerated() {
                 try Task.checkCancellation()
                 let base = request.inputs.first?.deletingPathExtension().lastPathComponent ?? "Files"
                 let suffix = staged.count > 1 ? "-\(index + 1)" : ""
-                outputs.append(try ConversionEngine.publish(url, directory: request.outputDirectory, basename: base + "-" + request.tool.rawValue + suffix, extension: url.pathExtension))
+                outputs.append(try OutputTransaction.publish(url, directory: request.outputDirectory, basename: base + "-" + request.tool.rawValue + suffix, extension: url.pathExtension))
             }
-            return ConversionResult(outputURLs: outputs, inputBytes: try request.inputs.reduce(0) { try $0 + ConversionEngine.byteCount($1) }, outputBytes: try outputs.reduce(0) { try $0 + ConversionEngine.byteCount($1) })
+            let urls=outputs.map(\.url)
+            return ConversionResult(outputURLs: urls, inputBytes: try request.inputs.reduce(0) { try $0 + ConversionEngine.byteCount($1) }, outputBytes: try urls.reduce(0) { try $0 + ConversionEngine.byteCount($1) })
         } catch {
-            for url in outputs { try? FileManager.default.removeItem(at: url) }
-            throw error
+            throw OutputTransaction.abort(error,outputs)
         }
     }
 }

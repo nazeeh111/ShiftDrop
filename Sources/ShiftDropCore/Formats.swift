@@ -65,6 +65,10 @@ public struct ConversionResult: Sendable {
     public let outputURLs: [URL]
     public let inputBytes: Int64
     public let outputBytes: Int64
+    public let cleanupWarning: String?
+    public init(outputURLs: [URL], inputBytes: Int64, outputBytes: Int64, cleanupWarning: String? = nil) {
+        self.outputURLs = outputURLs; self.inputBytes = inputBytes; self.outputBytes = outputBytes; self.cleanupWarning = cleanupWarning
+    }
 }
 
 public enum ConversionError: LocalizedError, Sendable {

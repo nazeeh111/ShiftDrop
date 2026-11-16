@@ -56,7 +56,7 @@ public enum FileToolEngine {
         let folders = request.inputs.filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true }
         var scratchDirectories: [URL] = []
         var prepared: [(request: ToolRequest, files: [URL])] = []
-        var published: [URL] = []
+        var published: [PublishedOutput] = []
         var inputBytes: Int64 = 0
         var outputBytes: Int64 = 0
         defer { for directory in scratchDirectories { try? FileManager.default.removeItem(at: directory) } }
@@ -88,15 +88,16 @@ public enum FileToolEngine {
             }
             for group in prepared {
                 try Task.checkCancellation()
+                let identities=try group.files.map { try OutputTransaction.identity($0) }
                 let result = try ToolOutput.publish(group.files, request: group.request)
-                published += result.outputURLs
+                guard result.outputURLs.count == identities.count else { throw ConversionError.conversionFailed("Output identity count differs.") }
+                published += zip(result.outputURLs,identities).map { PublishedOutput(url:$0.0,device:$0.1.0,inode:$0.1.1,sha256:$0.1.2) }
                 outputBytes += result.outputBytes
             }
             try Task.checkCancellation()
-            return ConversionResult(outputURLs: published, inputBytes: inputBytes, outputBytes: outputBytes)
+            return ConversionResult(outputURLs: published.map(\.url), inputBytes: inputBytes, outputBytes: outputBytes)
         } catch {
-            for output in published { try? FileManager.default.removeItem(at: output) }
-            throw error
+            throw OutputTransaction.abort(error,published)
         }
     }
 

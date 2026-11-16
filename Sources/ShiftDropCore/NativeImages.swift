@@ -5,8 +5,21 @@ import PDFKit
 
 enum NativeImages {
     static func load(_ input: URL, options: ConversionOptions) throws -> CGImage {
-        guard let source = CGImageSourceCreateWithURL(input as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary),
-              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+        guard let source = CGImageSourceCreateWithURL(input as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) else {
+            throw ConversionError.invalidInput("The image is damaged or its decoder is unavailable.")
+        }
+        return try loadSource(source, options: options)
+    }
+
+    static func load(_ data: Data, options: ConversionOptions) throws -> CGImage {
+        guard let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary) else {
+            throw ConversionError.invalidInput("The image is damaged or its decoder is unavailable.")
+        }
+        return try loadSource(source, options: options)
+    }
+
+    private static func loadSource(_ source: CGImageSource, options: ConversionOptions) throws -> CGImage {
+        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
               let width = properties[kCGImagePropertyPixelWidth] as? Int,
               let height = properties[kCGImagePropertyPixelHeight] as? Int, width > 0, height > 0 else {
             throw ConversionError.invalidInput("The image is damaged or its decoder is unavailable.")

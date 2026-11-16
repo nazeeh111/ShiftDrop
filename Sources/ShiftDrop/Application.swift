@@ -8,10 +8,11 @@ struct ShiftDropApp {
     static func main() {
         let args = Array(CommandLine.arguments.dropFirst())
         if args.first == "--help" {
-            print("ShiftDrop 0.2.0\nA background Finder file utility.\nConvert: ShiftDrop --convert INPUT --to FORMAT --output DIRECTORY")
+            print("ShiftDrop 0.2.0\nA background Finder file utility.\nConvert: ShiftDrop --convert INPUT --to FORMAT --output DIRECTORY\nDurable batch: ShiftDrop --batch-new SESSION DEST FORMAT INPUT... | --batch-resume SESSION DEST | --batch-status SESSION")
             return
         }
         if args.first == "--convert" { runCLI(args); return }
+        if args.first == "--batch-new" || args.first == "--batch-resume" || args.first == "--batch-status" { runBatchCLI(args); return }
         let application = NSApplication.shared
         let delegate = AppDelegate()
         application.delegate = delegate
@@ -19,6 +20,61 @@ struct ShiftDropApp {
         application.run()
         withExtendedLifetime(delegate) {}
     }
+    static func runBatchCLI(_ args: [String]) {
+        Task { @MainActor in
+            do {
+                if args.first == "--batch-status" {
+                    guard args.count == 2 else { throw ConversionError.invalidInput("Usage: --batch-status SESSION") }
+                    let directory=URL(fileURLWithPath:args[1],isDirectory:true)
+                    guard FileManager.default.fileExists(atPath:directory.appendingPathComponent("manifest.json").path) else { throw ConversionError.invalidInput("An existing batch manifest is required.") }
+                    let owner=try QueueSession(directory:directory)
+                    var failures=0;var records:[[String:Any]]=[]
+                    for job in owner.jobs {
+                        var status=job.state.rawValue
+                        if job.state == .complete {
+                            if job.recoverable { do { _ = try owner.verifiedResult(job.id); status="complete_verified" } catch { status="output_changed";failures += 1 } }
+                            else { status="one_shot_unverified" }
+                        }
+                        records.append(["id":job.id.uuidString,"state":status,"recoverable":job.recoverable,"input_sha256":job.inputSHA256,"source_status":owner.sourceStatus(job.id),"message":job.message ?? ""])
+                    }
+                    let data=try JSONSerialization.data(withJSONObject:["jobs":records],options:[.prettyPrinted,.sortedKeys]);print(String(decoding:data,as:UTF8.self));exit(failures == 0 ? 0 : 1)
+                }
+                guard args.count >= 3 else { throw ConversionError.invalidInput("Usage: --batch-new SESSION DEST FORMAT INPUT... or --batch-resume SESSION DEST") }
+                let sessionDirectory=URL(fileURLWithPath: args[1], isDirectory: true)
+                let destination = URL(fileURLWithPath: args[2], isDirectory: true)
+                let format: ConversionFormat?
+                if args[0] == "--batch-new" {
+                    guard args.count >= 5, let parsed=ConversionFormat(rawValue: args[3]) else { throw ConversionError.invalidInput("A format and at least one input are required.") }
+                    format=parsed
+                    try FileManager.default.createDirectory(at:sessionDirectory,withIntermediateDirectories:false)
+                } else {
+                    guard args.count == 3, FileManager.default.fileExists(atPath:sessionDirectory.appendingPathComponent("manifest.json").path) else { throw ConversionError.invalidInput("An existing batch manifest is required.") }
+                    format=nil
+                }
+                let owner = try QueueSession(directory: sessionDirectory)
+                if let format {
+                    for path in args.dropFirst(4) { _ = try owner.enqueue(input: URL(fileURLWithPath: path), format: format) }
+                }
+                var failures = 0
+                for id in owner.jobs.map(\.id) {
+                    guard let job=owner.jobs.first(where: { $0.id == id }) else { continue }
+                    if job.state == .complete {
+                        if job.recoverable { _ = try owner.verifiedResult(id); print("complete \(id.uuidString)") }
+                        else { _ = try owner.oneShotResult(id); print("one-shot complete, not reverified \(id.uuidString)") }
+                        continue
+                    }
+                    do {
+                        if job.state != .ready { try owner.retry(id) }
+                        let result=try await owner.execute(id, destination: destination)
+                        print("\(job.recoverable ? "complete" : "one-shot complete; not safely resumable") \(id.uuidString) \(result.outputURLs[0].path)")
+                    } catch { failures += 1; fputs("ShiftDrop batch \(id.uuidString): \(error.localizedDescription)\n", stderr) }
+                }
+                exit(failures == 0 ? 0 : 1)
+            } catch { fputs("ShiftDrop batch: \(error.localizedDescription)\n", stderr); exit(2) }
+        }
+        dispatchMain()
+    }
+
     static func runCLI(_ args: [String]) {
         guard args.count == 6, args[2] == "--to", args[4] == "--output", let format = ConversionFormat(rawValue: args[3]) else {
             fputs("Usage: ShiftDrop --convert INPUT --to FORMAT --output DIRECTORY\n", stderr); exit(64)

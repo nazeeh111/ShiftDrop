@@ -51,8 +51,9 @@ struct QueueRow: View {
                     HStack(spacing: 6) {
                         Text(FormatCatalog.kind(for: item.input))
                         Text("·")
+                        if item.state == .failed { Image(systemName: "exclamationmark.circle.fill").foregroundColor(.red).accessibilityHidden(true) }
                         Text(statusText)
-                    }.font(.system(size: 10)).foregroundColor(item.state == .failed ? .red : .muted)
+                    }.font(.system(size: 10)).foregroundColor(item.state == .failed ? .ink : .muted)
                 }
                 Spacer(minLength: 5)
                 if item.state == .running { ProgressView().controlSize(.small) }
@@ -75,7 +76,7 @@ struct QueueRow: View {
                 } label: { Image(systemName: "ellipsis").frame(width: 18, height: 22) }.menuStyle(.borderlessButton).frame(width: 22)
             }
             if item.state == .ready, let note = FormatCatalog.note(for: item.input, to: item.format) { Text(note).font(.system(size: 10)).foregroundColor(.muted).fixedSize(horizontal: false, vertical: true) }
-            if let message = item.message { Text(message).font(.system(size: 10)).foregroundColor(item.state == .failed ? .red : .muted).fixedSize(horizontal: false, vertical: true).textSelection(.enabled) }
+            if let message = item.message { Text(message).font(.system(size: 10)).foregroundColor(item.state == .failed ? .ink : .muted).fixedSize(horizontal: false, vertical: true).textSelection(.enabled) }
             if let result = item.result {
                 HStack { Image(systemName: "arrow.turn.down.right"); Text(result.outputURLs.count == 1 ? result.outputURLs[0].lastPathComponent : "\(result.outputURLs.count) output files").lineLimit(1).truncationMode(.middle); Spacer(); Text(AppModel.bytes(result.outputBytes)) }
                     .font(.system(size: 10, design: .monospaced)).foregroundColor(.muted).padding(.top, 1)
@@ -104,7 +105,7 @@ struct SettingsView: View {
             HStack { ShiftMark(size: 30); Text("Make it your flow.").font(.system(size: 23, weight: .semibold)); Spacer() }
             Toggle("Enable modifier shortcuts while dragging files", isOn: $model.quickShelf).toggleStyle(.switch)
             HStack { modifierPicker("Convert", $model.convertKey); modifierPicker("Tools", $model.toolsKey); modifierPicker("Actions", $model.actionsKey) }
-            if Set([model.convertKey, model.toolsKey, model.actionsKey]).count < 3 { Text("Choose a different modifier for each workflow. Duplicate shortcuts are disabled.").font(.system(size: 11)).foregroundColor(.red) }
+            if Set([model.convertKey, model.toolsKey, model.actionsKey]).count < 3 { Label("Choose a different modifier for each workflow. Duplicate shortcuts are disabled.", systemImage: "exclamationmark.triangle.fill").font(.system(size: 11)).foregroundColor(.ink) }
             Toggle("Launch ShiftDrop at login", isOn: Binding(get: { model.loginEnabled }, set: model.setLogin))
             Text("ShiftDrop starts quietly in the menu bar. It has no Dock icon or dashboard. Choose a file tool only when you need its controls.").font(.system(size: 11)).foregroundColor(.muted)
             VStack(alignment: .leading, spacing: 10) {
@@ -121,7 +122,7 @@ struct SettingsView: View {
             HStack { VStack(alignment: .leading, spacing: 4) { Text("Custom output folder").fontWeight(.medium); Text(model.outputDirectory.path).font(.system(size: 11)).foregroundColor(.muted).lineLimit(2).truncationMode(.middle) }; Spacer(); Button("Change…", action: model.chooseOutput) }
             Text("Settings apply to the next batch. Conversion history is kept only for this session.").font(.system(size: 11)).foregroundColor(.muted)
             HStack { Text("ShiftDrop 0.2.0").font(.system(size: 10, design: .monospaced)).foregroundColor(.muted); Spacer(); ActionButton(title: "Done", symbol: "checkmark", prominent: true) { close() }.keyboardShortcut(.defaultAction) }
-        }.padding(30) }.frame(width: 600, height: 680).background(Color.paper).foregroundColor(.ink)
+        }.padding(30) }.frame(width: 600, height: 680).background(Color.paper).foregroundColor(.ink).preferredColorScheme(.light)
     }
 }
 

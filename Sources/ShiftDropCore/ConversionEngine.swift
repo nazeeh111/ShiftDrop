@@ -2,7 +2,9 @@ import Foundation
 import Darwin
 
 public actor ConversionEngine {
-    public init() {}
+    private let removeStage: (URL) throws -> Void
+    public init() { removeStage = { try FileManager.default.removeItem(at:$0) } }
+    init(removeStage: @escaping (URL) throws -> Void) { self.removeStage=removeStage }
 
     public func convert(input: URL, to format: ConversionFormat, outputDirectory: URL, options: ConversionOptions = ConversionOptions()) async throws -> ConversionResult {
         try Task.checkCancellation()
@@ -36,7 +38,11 @@ public actor ConversionEngine {
         // Stage beside the destination so publication can use an exclusive atomic rename.
         let staging = outputDirectory.appendingPathComponent(".shiftdrop-\(UUID().uuidString)", isDirectory: true)
         try fm.createDirectory(at: staging, withIntermediateDirectories: false)
-        defer { try? fm.removeItem(at: staging) }
+        func cleanup() -> String? {
+            do { try removeStage(staging); return nil }
+            catch { return "Owned staging path retained at \(staging.path): \(error.localizedDescription)" }
+        }
+        do {
         let inputBytes = try Self.byteCount(input)
         let temporary = staging.appendingPathComponent("converted.\(format.fileExtension)")
         let staged: [URL]
@@ -95,7 +101,7 @@ public actor ConversionEngine {
             }
         }
         try Task.checkCancellation()
-        var published: [URL] = []
+        var published: [PublishedOutput] = []
         do {
             let basename = format == .gzip ? input.lastPathComponent : input.deletingPathExtension().lastPathComponent
             for (index, file) in staged.enumerated() {
@@ -103,15 +109,37 @@ public actor ConversionEngine {
                 let size = try file.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
                 guard size > 0 || format == .folder || format == .rtfd else { throw ConversionError.conversionFailed("The converter produced an empty file.") }
                 let page = staged.count > 1 ? "-page-\(index + 1)" : ""
-                published.append(try Self.publish(file, directory: outputDirectory, basename: basename + page, extension: format.fileExtension))
+                published.append(try OutputTransaction.publish(file, directory: outputDirectory, basename: basename + page, extension: format.fileExtension))
             }
             try Task.checkCancellation()
-            let outputBytes = try published.reduce(Int64(0)) { try $0 + Self.byteCount($1) }
-            return ConversionResult(outputURLs: published, inputBytes: inputBytes, outputBytes: outputBytes)
+            let urls=published.map(\.url)
+            let outputBytes = try urls.reduce(Int64(0)) { try $0 + Self.byteCount($1) }
+            let warning=cleanup()
+            return ConversionResult(outputURLs: urls, inputBytes: inputBytes, outputBytes: outputBytes, cleanupWarning: warning)
         } catch {
-            for url in published { try? fm.removeItem(at: url) }
-            throw error
+            throw OutputTransaction.abort(error,published)
         }
+        } catch {
+            let primary=error
+            if let warning=cleanup() { throw ConversionError.conversionFailed("\(primary.localizedDescription) \(warning)") }
+            throw primary
+        }
+    }
+
+    /// The durable queue hands the exact captured bytes to the existing native converters.
+    public func convertCaptured(_ data: Data, input: URL, to format: ConversionFormat, destination: URL, options: ConversionOptions = .init()) async throws {
+        try Task.checkCancellation()
+        guard options.quality.isFinite, (0...1).contains(options.quality) else { throw ConversionError.invalidOptions("Quality must be between 0 and 1.") }
+        if let size = options.maxPixelSize, !(1...16384).contains(size) { throw ConversionError.invalidOptions("Maximum image dimension must be between 1 and 16,384 pixels.") }
+        guard QueueSession.directCaptured(input: input, format: format) else { throw ConversionError.unsupported("This format is not supported by the durable batch.") }
+        let ext=input.pathExtension.lowercased()
+        if ["srt","vtt","txt","rtf","html","htm"].contains(ext) {
+            try TextConversions.convert(data,inputExtension:ext,destination:destination,format:format)
+        } else {
+            let image=try NativeImages.load(data,options:options)
+            try NativeImages.write(image,destination:destination,format:format,quality:options.quality)
+        }
+        try Task.checkCancellation()
     }
 
     static func publish(_ staged: URL, directory: URL, basename: String, extension ext: String) throws -> URL {
