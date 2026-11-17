@@ -88,7 +88,7 @@ struct QueueRow: View {
         switch item.state {
         case .ready: return "Ready → \(item.format.title)"
         case .running: return "Converting → \(item.format.title)"
-        case .complete: return String(format: "Done · %.1fs", item.elapsed ?? 0)
+        case .complete: return item.elapsed.map { String(format: "Done · %.1fs", $0) } ?? "Done"
         case .failed: return "Conversion failed"
         case .cancelled: return "Cancelled"
         }
@@ -120,7 +120,7 @@ struct SettingsView: View {
             Toggle("Save converted copies beside their originals", isOn: $model.saveBesideOriginals)
             Toggle("Reveal completed conversions in Finder", isOn: $revealCompletedFiles)
             HStack { VStack(alignment: .leading, spacing: 4) { Text("Custom output folder").fontWeight(.medium); Text(model.outputDirectory.path).font(.system(size: 11)).foregroundColor(.muted).lineLimit(2).truncationMode(.middle) }; Spacer(); Button("Change…", action: model.chooseOutput) }
-            Text("Settings apply to the next batch. Conversion history is kept only for this session.").font(.system(size: 11)).foregroundColor(.muted)
+            Text("Settings apply to the next batch. Your queue is saved on this Mac and restored when ShiftDrop reopens.").font(.system(size: 11)).foregroundColor(.muted)
             HStack { Text("ShiftDrop 0.2.0").font(.system(size: 10, design: .monospaced)).foregroundColor(.muted); Spacer(); ActionButton(title: "Done", symbol: "checkmark", prominent: true) { close() }.keyboardShortcut(.defaultAction) }
         }.padding(30) }.frame(width: 600, height: 680).background(Color.paper).foregroundColor(.ink).preferredColorScheme(.light)
     }

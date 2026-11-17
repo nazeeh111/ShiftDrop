@@ -34,7 +34,7 @@ Conversions save beside **each** original by default, including selections from 
 
 Existing names receive numbered suffixes. Originals are preserved by conversions and editing tools. **Move** is an explicit exception: it asks for a destination and confirmation before relocating originals. Unfinished output is cleaned up after failures or cancellation. Closing the job panel keeps active work running; reopen it from **Recent Jobs**.
 
-Quick drops arriving during an active conversion wait for that batch, then run automatically. Per-file formats, errors, retries and results remain available in the compact job panel for the current session. Completed copies can be revealed in Finder automatically; disable that in Settings if desired.
+Quick drops arriving during an active conversion wait for that batch, then run automatically. Per-file formats, errors, retries and results remain available in the compact job panel. The queue is saved locally and restored when ShiftDrop reopens. Completed copies can be revealed in Finder automatically; disable that in Settings if desired.
 
 ## Tools when you need them
 
