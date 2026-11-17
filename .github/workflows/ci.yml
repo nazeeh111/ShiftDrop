@@ -19,6 +19,8 @@ jobs:
           swift test --scratch-path "$RUNNER_TEMP/shiftdrop-test-build"
       - name: Package app
         run: bash scripts/package.sh
+      - name: Exercise packaged batch recovery
+        run: bash scripts/test-batch-resume.sh dist/ShiftDrop.app/Contents/MacOS/ShiftDrop
       - name: Upload app archive
         uses: actions/upload-artifact@v4
         with:

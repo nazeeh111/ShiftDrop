@@ -58,12 +58,17 @@ struct ShiftDropApp {
                 var failures = 0
                 for id in owner.jobs.map(\.id) {
                     guard let job=owner.jobs.first(where: { $0.id == id }) else { continue }
-                    if job.state == .complete {
-                        if job.recoverable { _ = try owner.verifiedResult(id); print("complete \(id.uuidString)") }
-                        else { _ = try owner.oneShotResult(id); print("one-shot complete, not reverified \(id.uuidString)") }
-                        continue
-                    }
                     do {
+                        if job.state == .complete {
+                            if job.recoverable {
+                                _ = try owner.verifiedResult(id)
+                                print("complete \(id.uuidString)")
+                            } else {
+                                _ = try owner.oneShotResult(id)
+                                print("one-shot complete, not reverified \(id.uuidString)")
+                            }
+                            continue
+                        }
                         if job.state != .ready { try owner.retry(id) }
                         let result=try await owner.execute(id, destination: destination)
                         print("\(job.recoverable ? "complete" : "one-shot complete; not safely resumable") \(id.uuidString) \(result.outputURLs[0].path)")
