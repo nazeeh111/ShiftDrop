@@ -1,0 +1,197 @@
+{
+  "date": "2026-11-17",
+  "public_source_commit": "1bad75f5c8011fdc426cbf0ca9aa84eb45de5d39",
+  "public_source_tree": "73a8f88d2d64e3d5ccf610bee0d61c6e274dbd01",
+  "capture": {
+    "path": "jobs-done.png",
+    "sha256": "8bf75339fa75c26d8e1db53d16e75f888a052543195e3e9026f7b80253ff061d",
+    "bytes": 51338,
+    "width": 1040,
+    "height": 776,
+    "alpha": false,
+    "method": "Actual CUA native-window screenshot bytes, no cropping/compositing/pixel edits",
+    "state": "One complete native conversion; note (2).vtt, 113 bytes",
+    "displayed_elapsed": "The 0.0 s label is captured UI text, not a performance benchmark"
+  },
+  "job_summary": {
+    "path": "job-summary.json",
+    "sha256": "04e098344a10c8638d33d093a4617eb6912fa9063cc2351e4386017c80b6f050"
+  },
+  "controlled_host": {
+    "shipping_swift_files": 23,
+    "byte_exact_shipping_files": 20,
+    "modified_boundary_files": [
+      "Sources/ShiftDrop/Application.swift",
+      "Sources/ShiftDrop/AppModel.swift",
+      "Sources/ShiftDrop/FileChooser.swift"
+    ],
+    "boundary_changes": [
+      "Inject existing AppModel initializer with MemoryDefaults, task-owned queue and checkLoginfalse",
+      "Keep destination/inputs task-owned and disable automatic Finder reveal",
+      "Show unchanged Jobs panel once at private startup because real launch is windowless",
+      "Force every private picker start to task-owned fixture directory"
+    ],
+    "added_test_helper": "MemoryDefaults class copied from existing test support",
+    "all_conversion_core_and_panels_unchanged": true,
+    "source_fingerprints": [
+      {
+        "path": "Sources/ShiftDrop/RadialWheel.swift",
+        "original_sha256": "7ea00f6a27190e579d87d065832d42163530b8d345a2a3c0ba3df40a41cbe82d",
+        "controlled_sha256": "7ea00f6a27190e579d87d065832d42163530b8d345a2a3c0ba3df40a41cbe82d",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDrop/ToolStudio.swift",
+        "original_sha256": "f16b04584cb64b360298f031060429eaa05b46b1a34e4fd0723b4a805dc0d0ad",
+        "controlled_sha256": "f16b04584cb64b360298f031060429eaa05b46b1a34e4fd0723b4a805dc0d0ad",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDrop/AppModel.swift",
+        "original_sha256": "f84b76ecad76f95628f23731c8fb67d3f868eb3454e4f410760987f840cb32d4",
+        "controlled_sha256": "ce9500b9c78c1d08b4022265f213c0d36bec3f6ab3cd288bc4a35b843f9c0925",
+        "modified": true
+      },
+      {
+        "path": "Sources/ShiftDrop/FileChooser.swift",
+        "original_sha256": "5ab73f99a41574cf7400ee15b0ebb23c78094204879bcd7f8a2605dd4dfd4700",
+        "controlled_sha256": "3436de525a61a06782c555ebcef89e449f8732516dd834f7da6b7622203d8882",
+        "modified": true
+      },
+      {
+        "path": "Sources/ShiftDrop/FileActions.swift",
+        "original_sha256": "04704ea7fcfc12e85023492b6c3cb70e4c125fd0c626892c3064d9bf1834368a",
+        "controlled_sha256": "04704ea7fcfc12e85023492b6c3cb70e4c125fd0c626892c3064d9bf1834368a",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDrop/Views.swift",
+        "original_sha256": "fa8a38d0c7331794807254a76ac2cdb9c70adad659214f12a5030c9e12c2800c",
+        "controlled_sha256": "fa8a38d0c7331794807254a76ac2cdb9c70adad659214f12a5030c9e12c2800c",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDrop/Application.swift",
+        "original_sha256": "dddd9033bc526dafd366862f1770066a99d18c541dfc703c39e90a670237f39e",
+        "controlled_sha256": "0e31edc69c4175621ebae3aaaacc81c814648b28571bb8c565c1c3e08ddb932d",
+        "modified": true
+      },
+      {
+        "path": "Sources/ShiftDrop/UtilityPanels.swift",
+        "original_sha256": "e2c87cfcb21caca97a077a00abc22f0879e4e9f8a0a9747ca9f29eede15f25a6",
+        "controlled_sha256": "e2c87cfcb21caca97a077a00abc22f0879e4e9f8a0a9747ca9f29eede15f25a6",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/TextConversions.swift",
+        "original_sha256": "876fb1063d819c611a1459e587e24f0f600c593be425e082bae43f68a2cd492e",
+        "controlled_sha256": "876fb1063d819c611a1459e587e24f0f600c593be425e082bae43f68a2cd492e",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/MediaTools.swift",
+        "original_sha256": "ba44070b292ed56392be16d42a81614d04a24a8f3ff88db8d48efe0ff248bda3",
+        "controlled_sha256": "ba44070b292ed56392be16d42a81614d04a24a8f3ff88db8d48efe0ff248bda3",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/ToolTypes.swift",
+        "original_sha256": "14408322468e68ff56edc93acf16610163e90ece96300d7f8c54128131488513",
+        "controlled_sha256": "14408322468e68ff56edc93acf16610163e90ece96300d7f8c54128131488513",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/ProcessRunner.swift",
+        "original_sha256": "43eb96d5fdc5b0fc54f328cd025f05c350b282f0f9b33646ba4377041978988f",
+        "controlled_sha256": "43eb96d5fdc5b0fc54f328cd025f05c350b282f0f9b33646ba4377041978988f",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/QueueSession.swift",
+        "original_sha256": "1f10763baace98d01862145270eacb65cafdb19f06dd1438244de53bf17aed4a",
+        "controlled_sha256": "1f10763baace98d01862145270eacb65cafdb19f06dd1438244de53bf17aed4a",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/DocumentConversions.swift",
+        "original_sha256": "c3be896c9877816620caf5b299bd02ba80c1379345d0c5ab81ed9c0ce59228a8",
+        "controlled_sha256": "c3be896c9877816620caf5b299bd02ba80c1379345d0c5ab81ed9c0ce59228a8",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/OutputTransaction.swift",
+        "original_sha256": "75448b4bdcbcbc47540a797b12420a595a74183f9156769f5cf4f502d678447a",
+        "controlled_sha256": "75448b4bdcbcbc47540a797b12420a595a74183f9156769f5cf4f502d678447a",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/FileToolEngine.swift",
+        "original_sha256": "4286910398c4ec52c81719190dbfe633d0f903133548ff185e84309de236fcfc",
+        "controlled_sha256": "4286910398c4ec52c81719190dbfe633d0f903133548ff185e84309de236fcfc",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/ImageTools.swift",
+        "original_sha256": "a35e572c1755853f6ec97b91c7b8ea1595e2719456f662ca50ba74ea2d25f8c9",
+        "controlled_sha256": "a35e572c1755853f6ec97b91c7b8ea1595e2719456f662ca50ba74ea2d25f8c9",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/ConversionEngine.swift",
+        "original_sha256": "aa755b345547e6af904d871584e85833dc243c3d94ecc89c5e6e3be26df07649",
+        "controlled_sha256": "aa755b345547e6af904d871584e85833dc243c3d94ecc89c5e6e3be26df07649",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/NativeImages.swift",
+        "original_sha256": "80a68d9790b64ba01d342930848658fe757dff6da66e28b2b88a44758baca06c",
+        "controlled_sha256": "80a68d9790b64ba01d342930848658fe757dff6da66e28b2b88a44758baca06c",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/ArchiveConversions.swift",
+        "original_sha256": "58f2f7517dbf61c5937016d00cefa07b06185e2eb8947bc95edad1b011e519e7",
+        "controlled_sha256": "58f2f7517dbf61c5937016d00cefa07b06185e2eb8947bc95edad1b011e519e7",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/FileTransfer.swift",
+        "original_sha256": "a692b8c273d8aab31705d56ebdaa10f735c56f8c3a6fa99062ad175065609cb7",
+        "controlled_sha256": "a692b8c273d8aab31705d56ebdaa10f735c56f8c3a6fa99062ad175065609cb7",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/Formats.swift",
+        "original_sha256": "a2d635156f19acafb9b35aa7b30678ab0b12fcf3e8c6921fded726ef1f83bff5",
+        "controlled_sha256": "a2d635156f19acafb9b35aa7b30678ab0b12fcf3e8c6921fded726ef1f83bff5",
+        "modified": false
+      },
+      {
+        "path": "Sources/ShiftDropCore/PDFTools.swift",
+        "original_sha256": "914596cc82ff7b6c1840051110620639ab0c4fac5cdd3f0e959b6748e71e4d29",
+        "controlled_sha256": "914596cc82ff7b6c1840051110620639ab0c4fac5cdd3f0e959b6748e71e4d29",
+        "modified": false
+      }
+    ]
+  },
+  "observed": [
+    "Native Jobs/menu/wheel",
+    "Cmd-D shortcut",
+    "Path field, Go and Add selected",
+    "Completed VTT",
+    "Cmd-Q and fresh controlled launch retain Done",
+    "Malformed-cue refusal",
+    "Escape picker cancellation preserves saved results"
+  ],
+  "setup_qualifications": [
+    "First windowless entry timed out in CUA; private startup exposed the actual shipping panel",
+    "Initial picker isolation missed the wheel caller: Downloads path and busy empty list shown, immediately cancelled before inspecting filenames or content; all-picker task isolation then applied before completed route",
+    "AX row click/double-click did not select; native path field/Go selected file"
+  ],
+  "limits": [
+    "Controlled native UI, not exact packaged live-app GUI admission",
+    "No Finder drag, physical drop gesture or VoiceOver/full appearance audit",
+    "No private files, real user queue/defaults or settings changed",
+    "Fresh exact packaged CLI is separate output verification, not GUI identity proof"
+  ]
+}

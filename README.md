@@ -43,6 +43,11 @@ An actual packaged **0.2.1** batch converts two synthetic subtitle cues, preserv
 [Native command, artifacts and limits](docs/presentation/README.md) · [Portable source and reader](docs/presentation/saved-copy.zip). This is a real windowless conversion, not a new Finder gesture capture. The retained native screenshot above keeps its original provenance; its compiled-source fingerprints match current main.
 
 
+### Native follow-up
+
+A [later controlled native run](docs/presentation/native-followup/README.md) used the shipping wheel, picker and Jobs panel to convert a synthetic subtitle, reopen its saved result, refuse malformed timing and cancel with Escape. State and callbacks were isolated in a private host; a separate exact packaged CLI process verified the GUI-created output. This adds native UI evidence without claiming Finder drag, VoiceOver or exact live-app GUI admission.
+
+
 ## Tools and formats
 
 Image tools include resize, crop, adjustments, annotations, redaction and collages. PDF tools handle page ordering, merging and raster compression. Installed FFmpeg/ffprobe enable video and audio tools; installed LibreOffice adds Office routes. ShiftDrop downloads neither engine. Processing is local; AirDrop uses Apple's sharing service only when you choose it.
