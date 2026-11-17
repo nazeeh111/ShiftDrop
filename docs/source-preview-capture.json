@@ -1,0 +1,131 @@
+{
+  "source_preview_version": "0.2.1",
+  "published_prebuilt_release_observed": "v0.2.0",
+  "new_binary_release_published": false,
+  "selected_reviewed_tree": "c0b7e3cbdce238a93f0042580a644ae0b3163456",
+  "current_compiled_Swift_source_sha256": {
+    "Package.swift": "43f905ae0ece55572cfc1069122dbcc394ddd9420c282dc61e482a75b22f827c",
+    "Sources/ShiftDrop/AppModel.swift": "f84b76ecad76f95628f23731c8fb67d3f868eb3454e4f410760987f840cb32d4",
+    "Sources/ShiftDrop/Application.swift": "dddd9033bc526dafd366862f1770066a99d18c541dfc703c39e90a670237f39e",
+    "Sources/ShiftDrop/FileActions.swift": "04704ea7fcfc12e85023492b6c3cb70e4c125fd0c626892c3064d9bf1834368a",
+    "Sources/ShiftDrop/FileChooser.swift": "5ab73f99a41574cf7400ee15b0ebb23c78094204879bcd7f8a2605dd4dfd4700",
+    "Sources/ShiftDrop/RadialWheel.swift": "7ea00f6a27190e579d87d065832d42163530b8d345a2a3c0ba3df40a41cbe82d",
+    "Sources/ShiftDrop/ToolStudio.swift": "f16b04584cb64b360298f031060429eaa05b46b1a34e4fd0723b4a805dc0d0ad",
+    "Sources/ShiftDrop/UtilityPanels.swift": "e2c87cfcb21caca97a077a00abc22f0879e4e9f8a0a9747ca9f29eede15f25a6",
+    "Sources/ShiftDrop/Views.swift": "fa8a38d0c7331794807254a76ac2cdb9c70adad659214f12a5030c9e12c2800c",
+    "Sources/ShiftDropCore/ArchiveConversions.swift": "58f2f7517dbf61c5937016d00cefa07b06185e2eb8947bc95edad1b011e519e7",
+    "Sources/ShiftDropCore/ConversionEngine.swift": "aa755b345547e6af904d871584e85833dc243c3d94ecc89c5e6e3be26df07649",
+    "Sources/ShiftDropCore/DocumentConversions.swift": "c3be896c9877816620caf5b299bd02ba80c1379345d0c5ab81ed9c0ce59228a8",
+    "Sources/ShiftDropCore/FileToolEngine.swift": "4286910398c4ec52c81719190dbfe633d0f903133548ff185e84309de236fcfc",
+    "Sources/ShiftDropCore/FileTransfer.swift": "a692b8c273d8aab31705d56ebdaa10f735c56f8c3a6fa99062ad175065609cb7",
+    "Sources/ShiftDropCore/Formats.swift": "a2d635156f19acafb9b35aa7b30678ab0b12fcf3e8c6921fded726ef1f83bff5",
+    "Sources/ShiftDropCore/ImageTools.swift": "a35e572c1755853f6ec97b91c7b8ea1595e2719456f662ca50ba74ea2d25f8c9",
+    "Sources/ShiftDropCore/MediaTools.swift": "ba44070b292ed56392be16d42a81614d04a24a8f3ff88db8d48efe0ff248bda3",
+    "Sources/ShiftDropCore/NativeImages.swift": "80a68d9790b64ba01d342930848658fe757dff6da66e28b2b88a44758baca06c",
+    "Sources/ShiftDropCore/OutputTransaction.swift": "75448b4bdcbcbc47540a797b12420a595a74183f9156769f5cf4f502d678447a",
+    "Sources/ShiftDropCore/PDFTools.swift": "914596cc82ff7b6c1840051110620639ab0c4fac5cdd3f0e959b6748e71e4d29",
+    "Sources/ShiftDropCore/ProcessRunner.swift": "43eb96d5fdc5b0fc54f328cd025f05c350b282f0f9b33646ba4377041978988f",
+    "Sources/ShiftDropCore/QueueSession.swift": "1f10763baace98d01862145270eacb65cafdb19f06dd1438244de53bf17aed4a",
+    "Sources/ShiftDropCore/TextConversions.swift": "876fb1063d819c611a1459e587e24f0f600c593be425e082bae43f68a2cd492e",
+    "Sources/ShiftDropCore/ToolTypes.swift": "14408322468e68ff56edc93acf16610163e90ece96300d7f8c54128131488513",
+    "Tests/ShiftDropAppTests/AppModelTests.swift": "b0839c6bb8040b24bac49837f0e353c84b35c5fa6e3d955ffd380df2fe5d1af6",
+    "Tests/ShiftDropAppTests/DurableAppModelTests.swift": "6b090aea3474d5e93305482b7bf137e3953a244f861ffca115750ae60c205105",
+    "Tests/ShiftDropAppTests/FileBrowserTests.swift": "7b6873ccd032a58a7ae5d96eedaffb35aaf431dc1fe3edcdd06e54d3773b60b2",
+    "Tests/ShiftDropAppTests/RadialWheelLayoutTests.swift": "05d7c22287d8b8c3fa278c5d0d153acfabaad5065c3402f568f0acc265824633",
+    "Tests/ShiftDropAppTests/ShelfDragGestureTests.swift": "aea198d6d896edc2bb135cc758f1835785a8fd18bfc8f1bcdcb116e5373cbadc",
+    "Tests/ShiftDropAppTests/WheelAccessibilityTests.swift": "6cbc68decd4055651bb30ed9c2872e25650571c9ea181416a797ec9df9cd5df8",
+    "Tests/ShiftDropCoreTests/ConversionEngineTests.swift": "45627482bd86a1501e4642462a04424c32b10b730e82e76c7e073d84db0e4a2c",
+    "Tests/ShiftDropCoreTests/ExpandedConversionTests.swift": "33d7902aeb75c7974af35fccd0c5cbeedb105b7f6e74d35d69f321642555f77a",
+    "Tests/ShiftDropCoreTests/FileToolEngineTests.swift": "d637bfb180f4565d30af828766c29f59853acbcb7a81f6bcb25e65e1e38f18a2",
+    "Tests/ShiftDropCoreTests/FileTransferTests.swift": "f75cddf97fbcd6bf4cae47dde816ead6e470bc408e4dfa0fe788c8246ad3c52e",
+    "Tests/ShiftDropCoreTests/ImageToolsTests.swift": "2407c586539e1a1f3640cd4e89a8b7cf788579b8698963fdaafa8476efcc84a7",
+    "Tests/ShiftDropCoreTests/MediaToolsTests.swift": "a1087dfbfafbdb6f857e213f9bc7fe54fe4567adc4aac9f1b034dac3d2076ffe",
+    "Tests/ShiftDropCoreTests/PDFToolsTests.swift": "82d56e6be239af5b46a8f0d55fbd59c56f615f9606a1f8d76fbb8ac4780861b5",
+    "Tests/ShiftDropCoreTests/QueueSessionTests.swift": "45ea88f420c75424a0143d0b052743e31d25a8aed6d84a6edfc8bcc2a046d790",
+    "Tests/ShiftDropCoreTests/ToolPlacementTests.swift": "46a81db61d7635d562de3175c922e474d4fbaf7e37b1fccf62fe6152a6c7d170",
+    "scripts/make-icon.swift": "61a8276c26e33b9eaa74732445c020dd013a992b0e0a07dd7b6245e7efbfc109"
+  },
+  "capture": {
+    "path": "assets/source-preview-jobs.jpg",
+    "sha256": "3f36d9c8fb5b89d45faf4ceebc58e81f6ae6204a0f1fd0f017e66589dea29e6c",
+    "producer": "Earliernativeverificationoftheexactselectedqueueupdate;notnewrootdesktopexecution",
+    "producer_execution_manifest_sha256": "37e6d827182a7df8e01d263c964fee75a78bf51f3672cacfebb2446abd44ab5b",
+    "product_source_files": 82,
+    "execution_source_files": 83,
+    "private_execution_changes": "AppModel/Application/UtilityPanelsplusTaskProfile.swiftforprivatequeue/preferences,fixtureadmission,startupJobsandreadonlyobservations;realconverters,queueownerandnativecontrols",
+    "unchanged_selected_UI_source_sha256": "fa8a38d0c7331794807254a76ac2cdb9c70adad659214f12a5030c9e12c2800c",
+    "observed": "NativemenuchooserSRT\u2192VTT101bytes/collisionpreserved;FinderBMPdropintomanualJPEGwheel956bytes;nativeQuit/reopenrestoresbothjobsandDonewithoutfabricatedtiming",
+    "native_limit": "Primarymodifier/automatic-wheelgestureandnormalinstalledprofilewerenotdirectlyexercisedinthisselectedsourcecheck;olderv0.2.0nativechecksremainhistorical"
+  },
+  "root_local_checks": {
+    "Swift_tests": 111,
+    "core_tests": 89,
+    "app_tests": 22,
+    "skips": 0,
+    "test_isolation": "Privatequeues;existingMemoryDefaults;noinstalledsavedqueue/loginitemstate",
+    "fixture_correction": "/tmpaliasforownedfixturebase;allassertionspreserved;initial3pathrepresentationfailuresretained",
+    "production_packaging": "PASS;strictad-hocsignature;arm64;version0.2.1",
+    "executable_sha256": "4d238f044c753bd21ef4c839c8ce9c625b753a2094f635ed7b788dd6e7822a97",
+    "actual_CLI_checks": [
+      {
+        "label": "cli-help",
+        "returncode": 0
+      },
+      {
+        "label": "cli-subtitles",
+        "returncode": 0
+      },
+      {
+        "label": "cli-invalid-arity",
+        "returncode": 64
+      },
+      {
+        "label": "cli-image",
+        "returncode": 0
+      },
+      {
+        "label": "batch-create",
+        "returncode": 0
+      },
+      {
+        "label": "batch-status",
+        "returncode": 0
+      },
+      {
+        "label": "batch-resume",
+        "returncode": 0
+      },
+      {
+        "label": "batch-changed-output",
+        "returncode": 1
+      },
+      {
+        "label": "batch-restored-output",
+        "returncode": 0
+      }
+    ],
+    "independent_subtitle_oracle_bytes": 102,
+    "subtitle_sha256": "b4e08bb1b1757c6aafb01a166eddf1fc8012251def981dcf46b47fd37654531b",
+    "independent_JPEG_geometry": [
+      64,
+      48
+    ],
+    "independent_quadrant_sample_max_RGB_delta": 1,
+    "collision_and_originals_preserved": true,
+    "fresh_process_batch_reopen_resume_no_duplicate": true,
+    "modified_output_refused_then_restored_verified": true
+  },
+  "independent_review": {
+    "scope": "Read-onlytwo-filehistory/timingcorrection;notrootdocs/testfixture/CIchanges",
+    "sha256": "4857691c3630aa42d7772b018172c40f8b28c1d71f0fe888a13225d1902a379a"
+  },
+  "limits": [
+    "Finiteharmlessfixtures,notallformatsorfidelity",
+    "Noordinaryinstalledprofile/newrootdesktopgestureverification",
+    "NophysicaloldermacOS/Intel/Spaces/fullATtest",
+    "Savedpathsarenotsecurity-scopedbookmarks",
+    "One-shotoperationsandFileToolsarenotresumed",
+    "Same-volumeretained-stagechecksarenotahostile-filesystemsandbox"
+  ],
+  "root_no_user_profile_or_private_files_read": true
+}

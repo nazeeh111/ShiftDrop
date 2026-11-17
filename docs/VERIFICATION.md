@@ -1,5 +1,13 @@
 # Verification
 
+## Current source preview: 0.2.1
+
+The current source passed 111 local Swift tests (89 core, 22 app), with no skips, on Apple silicon and Swift 6.4.2. Existing app-model fixtures now use private queues and in-memory preferences. Set `SHIFTDROP_TEST_ROOT` to an owned temporary directory to enable the durable queue cases; CI creates its own fixture root. On this host, `/tmp` avoids a Foundation URL-spelling difference against its `/private/tmp` alias. The initial three exact-path failures and the unchanged-assertion recheck are retained with the local task evidence.
+
+Production packaging passed strict ad-hoc signature checks. Actual packaged CLI fixtures verified exact subtitle output, preserved collisions/originals, finite decoded JPEG samples, fresh-process receipt restoration, no duplicate on resume and refusal of a modified completed output. [Source, capture attribution and exact limits](source-preview-capture.json) distinguish these checks from the earlier native UI capture and from release 0.2.0 below. No new prebuilt release, ordinary installed-profile acceptance or fresh primary-modifier gesture is claimed.
+
+## Historical release checks
+
 Release 0.2.0, checked 2026-10-22 on Apple silicon, macOS 26.6.2 and Swift 6.4. macOS 13 is the deployment target; older systems were not exercised locally.
 
 ## Automated checks

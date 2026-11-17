@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-VERSION="${SHIFTDROP_VERSION:-0.2.0}"
+VERSION="${SHIFTDROP_VERSION:-0.2.1}"
 BUILD_JOBS="${SHIFTDROP_BUILD_JOBS:-2}"
 if [[ ! "$BUILD_JOBS" =~ ^[1-9][0-9]*$ ]] || (( BUILD_JOBS > 64 )); then
   echo "SHIFTDROP_BUILD_JOBS must be between 1 and 64." >&2

@@ -12,7 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test engines and utility
-        run: swift test
+        env:
+          SHIFTDROP_TEST_ROOT: ${{ runner.temp }}/shiftdrop-test-fixtures
+        run: |
+          mkdir -p "$SHIFTDROP_TEST_ROOT"
+          swift test --scratch-path "$RUNNER_TEMP/shiftdrop-test-build"
       - name: Package app
         run: bash scripts/package.sh
       - name: Upload app archive

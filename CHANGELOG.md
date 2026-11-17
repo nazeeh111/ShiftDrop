@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1 · source preview
+
+- Saved conversion batches retain bounded source snapshots, publication receipts and completed-output checks across restart; interrupted work requires explicit retry.
+- Restored jobs omit elapsed time when it was not recorded. Settings describes the persisted queue accurately.
+- App-model test fixtures use private queues and in-memory preferences. The test-root setup enables durable queue and restart cases.
+- The published prebuilt download remains v0.2.0. This entry describes current source, not a new binary release.
+
 ## 0.2.0 · 2026-10-22
 
 - Rebuilt the normal interaction around Finder: quiet first launch/relaunch, no Dock icon, no dashboard.

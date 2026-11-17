@@ -8,7 +8,7 @@ struct ShiftDropApp {
     static func main() {
         let args = Array(CommandLine.arguments.dropFirst())
         if args.first == "--help" {
-            print("ShiftDrop 0.2.0\nA background Finder file utility.\nConvert: ShiftDrop --convert INPUT --to FORMAT --output DIRECTORY\nDurable batch: ShiftDrop --batch-new SESSION DEST FORMAT INPUT... | --batch-resume SESSION DEST | --batch-status SESSION")
+            print("ShiftDrop 0.2.1 (source preview)\nA background Finder file utility.\nConvert: ShiftDrop --convert INPUT --to FORMAT --output DIRECTORY\nDurable batch: ShiftDrop --batch-new SESSION DEST FORMAT INPUT... | --batch-resume SESSION DEST | --batch-status SESSION")
             return
         }
         if args.first == "--convert" { runCLI(args); return }

@@ -128,13 +128,19 @@ final class AppModelTests: XCTestCase {
 
     @MainActor
     private func makeModel() -> AppModel {
-        let name = "ShiftDrop.AppModelTests.\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: name)!
-        defaults.removePersistentDomain(forName: name)
-        addTeardownBlock { defaults.removePersistentDomain(forName: name) }
-        let model = AppModel(defaults: defaults)
+        let queueDirectory = privateQueueDirectory()
+        let defaults = MemoryDefaults(["outputDirectory": queueDirectory.appendingPathComponent("output").path])
+        let model = AppModel(defaults: defaults, queueDirectory: queueDirectory, checkLogin: false)
         model.saveBesideOriginals = false
         return model
+    }
+
+    // Keep tests away from the installed application's saved queue and login state.
+    private func privateQueueDirectory() -> URL {
+        let directory = URL(fileURLWithPath: "/private/tmp", isDirectory: true)
+            .appendingPathComponent("shiftdrop-app-model-tests-\(UUID().uuidString)", isDirectory: true)
+        addTeardownBlock { try? FileManager.default.removeItem(at: directory) }
+        return directory
     }
 
     @MainActor
@@ -171,18 +177,17 @@ final class AppModelTests: XCTestCase {
 
     @MainActor
     func testPlacementDefaultsBesideOriginalAndPersistsExplicitCustomChoice() {
-        let name = "ShiftDrop.PlacementTests.\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: name)!
-        defer { defaults.removePersistentDomain(forName: name) }
+        let queueDirectory = privateQueueDirectory()
+        let defaults = MemoryDefaults(["outputDirectory": queueDirectory.appendingPathComponent("output").path])
         let source = URL(fileURLWithPath: "/private/tmp/source/input.txt")
-        let model = AppModel(defaults: defaults)
+        let model = AppModel(defaults: defaults, queueDirectory: queueDirectory, checkLogin: false)
         XCTAssertTrue(model.saveBesideOriginals)
         XCTAssertEqual(model.destinationDirectory(for: source), source.deletingLastPathComponent())
         XCTAssertEqual(model.toolDestination(for: [source]), source.deletingLastPathComponent())
         let custom = URL(fileURLWithPath: "/private/tmp/custom", isDirectory: true)
         model.outputDirectory = custom
         model.saveBesideOriginals = false
-        let reopened = AppModel(defaults: defaults)
+        let reopened = AppModel(defaults: defaults, queueDirectory: queueDirectory, checkLogin: false)
         XCTAssertFalse(reopened.saveBesideOriginals)
         XCTAssertEqual(reopened.destinationDirectory(for: source), custom)
         XCTAssertEqual(reopened.toolDestination(for: [source]), custom)
