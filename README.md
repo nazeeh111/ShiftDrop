@@ -34,6 +34,15 @@ Recoverable jobs use regular inputs and a single regular output up to 32 MiB, wi
 
 [Recovery rules and headless batch commands](docs/usage.md#resumable-conversion-batches)
 
+### Inspect a saved-copy case
+
+An actual packaged **0.2.1** batch converts two synthetic subtitle cues, preserves an existing `note.vtt`, and publishes `note (2).vtt`. A fresh process verifies the result. Replacing that result with byte-identical data in a different file makes its retained receipt refuse verification; an explicit new conversion creates `note (3).vtt` without replacing either prior file.
+
+<picture><source media="(max-width:650px)" srcset="docs/presentation/copy-mobile.png"><img src="docs/presentation/copy.png" alt="Actual subtitle timing is preserved from SRT to a numbered VTT copy. Fresh-process verification succeeds, while byte-identical output replacement is held because the retained file identity differs."></picture>
+
+[Native command, artifacts and limits](docs/presentation/README.md) · [Portable source and reader](docs/presentation/saved-copy.zip). This is a real windowless conversion, not a new Finder gesture capture. The retained native screenshot above keeps its original provenance; its compiled-source fingerprints match current main.
+
+
 ## Tools and formats
 
 Image tools include resize, crop, adjustments, annotations, redaction and collages. PDF tools handle page ordering, merging and raster compression. Installed FFmpeg/ffprobe enable video and audio tools; installed LibreOffice adds Office routes. ShiftDrop downloads neither engine. Processing is local; AirDrop uses Apple's sharing service only when you choose it.

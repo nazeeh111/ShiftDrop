@@ -1,0 +1,33 @@
+{
+  "inputs": {
+    "note.srt": "6338b2e19bf497cbaf289e9ffd28b21a282055931598cda39a7e7322048bdab5",
+    "converted.vtt": "2250e0dd5da6e8e344548a9358de01dbbc11472b5dde756e5c1a716c0b37f90a",
+    "receipt.json": "7e13d90529e87f0f4fd2d9625c35ff09318f5be8a89b8c4ace9c3b48eb9ea79b"
+  },
+  "cues": [
+    {
+      "start": 1007,
+      "end": 2999,
+      "text": "Keep the original."
+    },
+    {
+      "start": 5120,
+      "end": 7250,
+      "text": "Review the saved copy."
+    }
+  ],
+  "timeUnit": "milliseconds",
+  "mapping": {
+    "desktop": {
+      "x0": 180,
+      "width": 904,
+      "maximumMs": 8000
+    },
+    "phone": {
+      "x0": 22,
+      "width": 331,
+      "maximumMs": 8000
+    }
+  },
+  "meaning": "Equal source/output timing; status schematic from native commands. No runtime speed or native-UI measurement."
+}

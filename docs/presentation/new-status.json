@@ -1,0 +1,12 @@
+{
+  "jobs": [
+    {
+      "id": "41824EA6-2D3F-46E6-BDE2-5435A3B8AFA7",
+      "input_sha256": "6338b2e19bf497cbaf289e9ffd28b21a282055931598cda39a7e7322048bdab5",
+      "message": "",
+      "recoverable": true,
+      "source_status": "unchanged",
+      "state": "complete_verified"
+    }
+  ]
+}
