@@ -1,0 +1,48 @@
+{
+  "scope": "Owned synthetic subtitle fixtures and durable queue; actual controlled native UI",
+  "input": {
+    "name": "note.srt",
+    "sha256": "da0f6eab602b28b667c605ca8f50498d7970579e2dea78acecd360ed5bbfec0c",
+    "cue_intervals_ms": [
+      [
+        1007,
+        2999
+      ],
+      [
+        5120,
+        7250
+      ]
+    ],
+    "source_preserved": true
+  },
+  "existing_collision": {
+    "name": "note.vtt",
+    "sha256": "5590fcbd19def1f439df135058a6c8f0c0f8834c53ff7d7707e67e36b5ae919a",
+    "preserved": true
+  },
+  "output": {
+    "name": "note (2).vtt",
+    "bytes": 113,
+    "sha256": "507abaad9a1ce48c501c45f9e5a756cb152d62209b337cf303ade18d1a07a85b",
+    "separate_exact_packaged_cli_state": "complete_verified",
+    "source_status": "unchanged"
+  },
+  "negative": {
+    "name": "invalid.srt",
+    "input": "Reversed cue: 2000 ms to 1000 ms",
+    "state": "failed",
+    "message": "Cannot read this file. Subtitle cue 1 is malformed. Use valid start/end timestamps and nonempty text.",
+    "output_absent": true,
+    "prior_output_hashes_unchanged": true
+  },
+  "native_controls": {
+    "menu_wheel": true,
+    "command_D": true,
+    "path_field_go_add_selected": true,
+    "quit_reopen_retains_done": true,
+    "escape_picker_cancel_preserves_queue": true,
+    "final_command_Q": true
+  },
+  "separate_cli_status_exit": 0,
+  "status_exit_note": "Exit 0 means completed recoverable outputs verify; the failed job remains failed, not accepted as success."
+}
