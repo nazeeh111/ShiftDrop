@@ -1,0 +1,49 @@
+{
+  "source": "Actual packaged source-preview CLI, fresh process per command",
+  "originalSHA256": "6338b2e19bf497cbaf289e9ffd28b21a282055931598cda39a7e7322048bdab5",
+  "collisionSHA256": "26135a1d1073b66a60492d2e793a055fe660ae4863fc3f0367a36b11165f683f",
+  "convertedSHA256": "2250e0dd5da6e8e344548a9358de01dbbc11472b5dde756e5c1a716c0b37f90a",
+  "outputName": "note (2).vtt",
+  "newOutputName": "note (3).vtt",
+  "before": {
+    "jobs": [
+      {
+        "id": "D163FD92-20A4-4223-9148-B07C5FBC4998",
+        "input_sha256": "6338b2e19bf497cbaf289e9ffd28b21a282055931598cda39a7e7322048bdab5",
+        "message": "",
+        "recoverable": true,
+        "source_status": "unchanged",
+        "state": "complete_verified"
+      }
+    ]
+  },
+  "sameByteReplacement": {
+    "jobs": [
+      {
+        "id": "D163FD92-20A4-4223-9148-B07C5FBC4998",
+        "input_sha256": "6338b2e19bf497cbaf289e9ffd28b21a282055931598cda39a7e7322048bdab5",
+        "message": "",
+        "recoverable": true,
+        "source_status": "unchanged",
+        "state": "output_changed"
+      }
+    ]
+  },
+  "newExplicitConversion": {
+    "jobs": [
+      {
+        "id": "41824EA6-2D3F-46E6-BDE2-5435A3B8AFA7",
+        "input_sha256": "6338b2e19bf497cbaf289e9ffd28b21a282055931598cda39a7e7322048bdab5",
+        "message": "",
+        "recoverable": true,
+        "source_status": "unchanged",
+        "state": "complete_verified"
+      }
+    ]
+  },
+  "sameBytesDifferentFileIdentity": true,
+  "oldResumeRefused": true,
+  "originalAndCollisionPreserved": true,
+  "invalidReversedCuePreservedOutputs": true,
+  "nativeGUI": "Not exercised; Mac locked. No drag/wheel/picker claim."
+}

@@ -1,0 +1,12 @@
+{
+  "jobs": [
+    {
+      "id": "D163FD92-20A4-4223-9148-B07C5FBC4998",
+      "input_sha256": "6338b2e19bf497cbaf289e9ffd28b21a282055931598cda39a7e7322048bdab5",
+      "message": "",
+      "recoverable": true,
+      "source_status": "unchanged",
+      "state": "output_changed"
+    }
+  ]
+}
