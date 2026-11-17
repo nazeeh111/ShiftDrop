@@ -121,4 +121,4 @@ ShiftDrop --batch-status /path/to/new-session
 ShiftDrop --batch-resume /path/to/new-session /path/to/output
 ```
 
-A session path for `--batch-new` must not already exist. Resume is explicit; completed recoverable outputs are checked, and an interrupted one-shot job is not repeated. A failed planning step may leave already-added jobs in the new session for inspection. No durable handoff to another machine or automatic restoration of sandbox authority is claimed.
+A session path for `--batch-new` must not already exist. Resume is explicit. A changed or unavailable recoverable output is reported by job ID and left untouched, while other jobs can finish. The command exits nonzero if any job needs attention. Interrupted one-shot jobs are never repeated. A failed planning step may leave already-added jobs in the new session for inspection. No durable handoff to another machine or automatic restoration of sandbox authority is claimed.
