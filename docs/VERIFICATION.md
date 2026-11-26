@@ -56,4 +56,6 @@ Packaging builds in disposable local storage, validates Info.plist, sets `LSUIEl
 
 GitHub CI, public release metadata and a downloaded release ZIP are checked separately at publication: matching SHA-256, strict extracted signature verification, version readback and a real command-line subtitle conversion. CI status is visible through the repository badge; release asset checksums accompany the download.
 
+The [license-included stable ZIP](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip) ships the original signed v0.2.0 app alongside the complete MIT notice. Use its [matching checksum](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip.sha256). The historical `SHA256SUMS.txt` still covers the original ZIP and demo files.
+
 The prebuilt binary targets Apple silicon and is **not Apple notarized**. Downloaded-app Gatekeeper acceptance, Intel runtime and older macOS runtime were not tested. Pages documents remain unsupported. No exact feature parity with another utility is claimed.

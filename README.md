@@ -10,7 +10,7 @@ A macOS menu bar utility for local file conversion and editing. A radial wheel a
 
 ## Get ShiftDrop
 
-[Download stable v0.2.0](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.0) · [Try v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) · [Build current source](#build-current-source)
+[Download stable v0.2.0 with MIT license](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip) · [Stable ZIP checksum](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip.sha256) · [Try v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) · [Build current source](#build-current-source)
 
 Prebuilt downloads target Apple silicon and declare macOS 13 or later.
 

@@ -52,8 +52,8 @@ Everything is processed locally using macOS frameworks and optional installed en
 
 ## Install
 
-1. Download the ZIP from [the latest stable release](https://github.com/nazeeh111/ShiftDrop/releases/latest), or choose [v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) to try saved conversion batches. The prebuilt binaries target **Apple silicon** and declare **macOS 13 or later**.
-2. Extract it and move **ShiftDrop.app** into Applications.
+1. Download the [stable v0.2.0 ZIP with its MIT license](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip) and [matching checksum](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip.sha256), or choose [v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) to try saved conversion batches. The prebuilt binaries target **Apple silicon** and declare **macOS 13 or later**.
+2. For the stable ZIP, verify the download from the directory containing both files with `shasum -a 256 -c ShiftDrop-0.2.0-macOS-with-license.zip.sha256`. Extract the ZIP and move **ShiftDrop.app** into Applications.
 3. Open it once. Look for its menu bar icon, then drag a Finder file and hold Shift.
 
 The build is ad-hoc signed and **not Apple notarized**, so macOS may block a downloaded copy. Building from source is available below. Launch at login is off until you enable it in Settings; install in Applications first. No LaunchAgent or system daemon is installed.
