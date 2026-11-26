@@ -10,9 +10,11 @@ A macOS menu bar utility for local file conversion and editing. A radial wheel a
 
 ## Get ShiftDrop
 
-[Download v0.2.0 for Apple silicon](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.0) · macOS 13+ · [Build current source](#build-current-source)
+[Download stable v0.2.0](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.0) · [Try v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) · [Build current source](#build-current-source)
 
-**v0.2.0** is the stable prebuilt release. It includes the Finder wheel, conversions and the Recent Jobs panel. The **0.2.1 source preview** adds saved conversion batches, output verification after reopening and explicit retry for interrupted jobs. Build current source to try those features. The downloaded app uses an ad-hoc signature and is not Apple notarized. macOS may block it. Move it into Applications, open it, then look for the menu bar icon. Launch at login stays off until you enable it.
+Prebuilt downloads target Apple silicon and declare macOS 13 or later.
+
+**v0.2.0** is the stable prebuilt release. It includes the Finder wheel, conversions and the Recent Jobs panel. The **0.2.1 preview** adds saved conversion batches, output verification after reopening and explicit retry for interrupted jobs. Both downloads use an ad-hoc signature and are not Apple notarized. macOS may block it. Move it into Applications, open it, then look for the menu bar icon. Launch at login stays off until you enable it.
 
 ## Drag, hold, drop
 
@@ -28,7 +30,7 @@ Copies go beside each original, including a selection from different folders. Ex
 
 ## Keep a batch, recover deliberately
 
-The source preview saves conversion jobs locally. Reopening restores their state; interrupted jobs wait for explicit Retry after you restore file access. Completed recoverable outputs are checked against their retained stage and digest. A restored completion displays **Done** without inventing a new elapsed time.
+The 0.2.1 preview saves conversion jobs locally. Reopening restores their state; interrupted jobs wait for explicit Retry after you restore file access. Completed recoverable outputs are checked against their retained stage and digest. A restored completion displays **Done** without inventing a new elapsed time.
 
 Recoverable jobs use regular inputs and a single regular output up to 32 MiB, with queue and destination on the same volume. Larger inputs, directory or multiple outputs, and File Tools use labeled one-shot operations. Their interrupted work is not automatically repeated. The saved queue contains private source paths, captured input bytes and retained stages; it consumes disk space and does not restore security-scoped access automatically.
 

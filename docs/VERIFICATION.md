@@ -1,10 +1,10 @@
 # Verification
 
-## Current source preview: 0.2.1
+## 0.2.1 preview
 
 The current source passed 111 local Swift tests (89 core, 22 app), with no skips, on Apple silicon and Swift 6.4.2. Existing app-model fixtures now use private queues and in-memory preferences. Set `SHIFTDROP_TEST_ROOT` to an owned temporary directory to enable the durable queue cases; CI creates its own fixture root. On this host, `/tmp` avoids a Foundation URL-spelling difference against its `/private/tmp` alias. The initial three exact-path failures and the unchanged-assertion recheck are retained with the local task evidence.
 
-Production packaging passed strict ad-hoc signature checks. Actual packaged CLI fixtures verified exact subtitle output, preserved collisions/originals, finite decoded JPEG samples, fresh-process receipt restoration, no duplicate on resume and refusal of a modified completed output. [Source, capture attribution and exact limits](source-preview-capture.json) distinguish these checks from the earlier native UI capture and from release 0.2.0 below. No new prebuilt release, ordinary installed-profile acceptance or fresh primary-modifier gesture is claimed.
+Production packaging passed strict ad-hoc signature checks. Actual packaged CLI fixtures verified exact subtitle output, preserved collisions/originals, finite decoded JPEG samples, fresh-process receipt restoration, no duplicate on resume and refusal of a modified completed output. [Source, capture attribution and exact limits](source-preview-capture.json) distinguish these checks from the earlier native UI capture and from release 0.2.0 below. The [Preview 1 release](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) includes the GitHub Actions ZIP and its SHA-256 checksum. The extracted release ZIP passed strict signature verification, a byte-for-byte MIT license comparison, synthetic subtitle conversion and batch recovery. Ordinary Finder launch of that download on a fresh macOS installation remains unverified.
 
 ## Historical release checks
 
