@@ -1,22 +1,27 @@
-<p align="center"><img src="assets/AppIcon.png" width="80" alt="ShiftDrop icon"></p>
-<h1 align="center">ShiftDrop</h1>
-<p align="center"><strong>Stay in Finder.</strong><br>Drag a file. Hold Shift. Drop on its next format.</p>
+<h1><img src="assets/AppIcon.png" width="34" height="34" alt=""> ShiftDrop</h1>
 
-A macOS menu bar utility for local file conversion and editing. A radial wheel appears at your pointer, and converted copies save beside their originals. Recent Jobs shows progress and results.
+Drag a file in Finder, hold **Shift**, and drop on an output format. ShiftDrop saves a converted copy beside the original.
 
-![ShiftDrop Jobs after quitting and reopening, showing completed image and subtitle conversions](assets/source-preview-jobs.jpg)
+[Download stable v0.2.0 with MIT license](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip) · [Stable ZIP checksum](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip.sha256) · [Installation guide](docs/usage.md#install)
 
-*Native fixture from the reviewed queue update, after quit and reopen. Source files and a colliding output were preserved. [Capture provenance and verification limits](docs/source-preview-capture.json).*
+<picture>
+  <source media="(max-width: 600px)" srcset="docs/presentation/finder-wheel-mobile.png">
+  <img src="docs/presentation/finder-wheel.png" width="920" alt="ShiftDrop’s native conversion wheel highlights JPEG. Finder then shows Signal.jpg beside the original Signal.png.">
+</picture>
+
+[Full conversion wheel](presentation/assets/radial.png) · [20-second native demo](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-demo.mp4) · [Capture details](docs/presentation/finder-wheel.md)
 
 ## Get ShiftDrop
 
-[Download stable v0.2.0 with MIT license](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip) · [Stable ZIP checksum](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip.sha256) · [Try v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) · [Build current source](#build-current-source)
+[Try v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) · [Build current source](#build-current-source)
 
 Prebuilt downloads target Apple silicon and declare macOS 13 or later.
 
-**v0.2.0** is the stable prebuilt release. It includes the Finder wheel, conversions and the Recent Jobs panel. The **0.2.1 preview** adds saved conversion batches, output verification after reopening and explicit retry for interrupted jobs. Both downloads use an ad-hoc signature and are not Apple notarized. macOS may block it. Move it into Applications, open it, then look for the menu bar icon. Launch at login stays off until you enable it.
+**v0.2.0** is the stable prebuilt release. It includes the Finder wheel, conversions and the Recent Jobs panel. The **0.2.1 preview** adds saved conversion batches, output verification after reopening and explicit retry for interrupted jobs. Both downloads use an ad-hoc signature and are not Apple notarized. macOS may block the app. Move it into Applications, open it, then look for the menu bar icon. Launch at login stays off until you enable it.
 
 ## Drag, hold, drop
+
+For the pictured example, save the [sample PNG](https://raw.githubusercontent.com/nazeeh111/ShiftDrop/a194dc0425e12d82cd7efcebf19ce5c46c864709/presentation/assets/Signal.png) to a writable local folder. With ShiftDrop running in the menu bar, drag the PNG in Finder, hold **Shift**, then release the mouse over **JPEG**. Look for `Signal.jpg` beside the source. Open **Recent Jobs** from the menu bar to inspect the result.
 
 | Hold while dragging | Choose from the wheel |
 | --- | --- |
@@ -42,7 +47,7 @@ An actual packaged **0.2.1** batch converts two synthetic subtitle cues, preserv
 
 <picture><source media="(max-width:650px)" srcset="docs/presentation/copy-mobile.png"><img src="docs/presentation/copy.png" alt="Actual subtitle timing is preserved from SRT to a numbered VTT copy. Fresh-process verification succeeds, while byte-identical output replacement is held because the retained file identity differs."></picture>
 
-[Native command, artifacts and limits](docs/presentation/README.md) · [Portable source and reader](docs/presentation/saved-copy.zip). This is a real windowless conversion, not a new Finder gesture capture. The retained native screenshot above keeps its original provenance; its compiled-source fingerprints match current main.
+[Native command, artifacts and limits](docs/presentation/README.md) · [Portable source and reader](docs/presentation/saved-copy.zip). This is a real windowless conversion, not a new Finder gesture capture. [Native Jobs after quit and reopen](assets/source-preview-jobs.jpg) · [Queue capture provenance](docs/source-preview-capture.json).
 
 
 ### Native follow-up
