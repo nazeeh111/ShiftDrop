@@ -19,8 +19,14 @@ jobs:
           swift test --scratch-path "$RUNNER_TEMP/shiftdrop-test-build"
       - name: Package app
         run: bash scripts/package.sh
-      - name: Exercise packaged batch recovery
-        run: bash scripts/test-batch-resume.sh dist/ShiftDrop.app/Contents/MacOS/ShiftDrop
+      - name: Verify and exercise the distributable archive
+        run: |
+          extracted="$(mktemp -d "$RUNNER_TEMP/shiftdrop-archive.XXXXXX")"
+          ditto -x -k dist/ShiftDrop-*-macOS.zip "$extracted"
+          app="$extracted/ShiftDrop.app"
+          cmp LICENSE "$app/Contents/Resources/LICENSE"
+          codesign --verify --deep --strict "$app"
+          bash scripts/test-batch-resume.sh "$app/Contents/MacOS/ShiftDrop"
       - name: Upload app archive
         uses: actions/upload-artifact@v4
         with:
