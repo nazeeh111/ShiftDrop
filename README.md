@@ -2,7 +2,7 @@
 <h1 align="center">ShiftDrop</h1>
 <p align="center"><strong>Stay in Finder.</strong><br>Drag a file. Hold Shift. Drop on its next format.</p>
 
-A macOS menu bar utility for local file conversion and editing. A radial wheel appears at your pointer; converted copies save beside their originals. Recent Jobs keeps progress, results and the saved conversion queue within reach.
+A macOS menu bar utility for local file conversion and editing. A radial wheel appears at your pointer, and converted copies save beside their originals. Recent Jobs shows progress and results.
 
 ![ShiftDrop Jobs after quitting and reopening, showing completed image and subtitle conversions](assets/source-preview-jobs.jpg)
 
@@ -12,7 +12,7 @@ A macOS menu bar utility for local file conversion and editing. A radial wheel a
 
 [Download v0.2.0 for Apple silicon](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.0) · macOS 13+ · [Build current source](#build-current-source)
 
-The prebuilt release is **v0.2.0**. This README also describes the **0.2.1 source preview**, including saved conversion batches. Build current source to use those updates. The downloaded app is ad-hoc signed and not Apple notarized; macOS may block it. Move it into Applications, open it, then look for the menu bar icon. Launch at login stays off until you enable it.
+**v0.2.0** is the stable prebuilt release. It includes the Finder wheel, conversions and the Recent Jobs panel. The **0.2.1 source preview** adds saved conversion batches, output verification after reopening and explicit retry for interrupted jobs. Build current source to try those features. The downloaded app uses an ad-hoc signature and is not Apple notarized. macOS may block it. Move it into Applications, open it, then look for the menu bar icon. Launch at login stays off until you enable it.
 
 ## Drag, hold, drop
 
