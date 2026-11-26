@@ -1,7 +1,7 @@
 <p align="center"><img src="../assets/AppIcon.png" width="100" alt="ShiftDrop icon"></p>
 <h1 align="center">ShiftDrop</h1>
 <p align="center"><strong>Stay in Finder.</strong><br>Drag a file. Hold Shift. Drop on its next format.</p>
-<p align="center"><a href="https://github.com/nazeeh111/ShiftDrop/releases/latest">Download for Mac</a> · <a href="#install">Install</a> · <a href="docs/TOOLS.md">Tools</a> · <a href="docs/FORMATS.md">Formats</a> · <a href="CHANGELOG.md">Changes</a></p>
+<p align="center"><a href="https://github.com/nazeeh111/ShiftDrop/releases/latest">Download for Mac</a> · <a href="#install">Install</a> · <a href="TOOLS.md">Tools</a> · <a href="FORMATS.md">Formats</a> · <a href="../CHANGELOG.md">Changes</a></p>
 
 [![macOS build](https://github.com/nazeeh111/ShiftDrop/actions/workflows/ci.yml/badge.svg)](https://github.com/nazeeh111/ShiftDrop/actions/workflows/ci.yml)
 [![Latest release](https://img.shields.io/github/v/release/nazeeh111/ShiftDrop)](https://github.com/nazeeh111/ShiftDrop/releases/latest)
@@ -54,7 +54,7 @@ Everything is processed locally using macOS frameworks and optional installed en
 
 1. Download the [stable v0.2.0 ZIP with its MIT license](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip) and [matching checksum](https://github.com/nazeeh111/ShiftDrop/releases/download/v0.2.0/ShiftDrop-0.2.0-macOS-with-license.zip.sha256), or choose [v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1) to try saved conversion batches. The prebuilt binaries target **Apple silicon** and declare **macOS 13 or later**.
 2. For the stable ZIP, verify the download from the directory containing both files with `shasum -a 256 -c ShiftDrop-0.2.0-macOS-with-license.zip.sha256`. Extract the ZIP and move **ShiftDrop.app** into Applications.
-3. Open it once. Look for its menu bar icon, then drag a Finder file and hold Shift.
+3. Open ShiftDrop once and look for its menu bar icon. Save the [sample PNG](https://raw.githubusercontent.com/nazeeh111/ShiftDrop/a194dc0425e12d82cd7efcebf19ce5c46c864709/presentation/assets/Signal.png) in a writable folder. Drag it in Finder, hold **Shift**, and drop on **JPEG**. The folder now contains both `Signal.png` and its JPEG copy. Open **Recent Jobs** from the menu bar to inspect the conversion.
 
 The build is ad-hoc signed and **not Apple notarized**, so macOS may block a downloaded copy. Building from source is available below. Launch at login is off until you enable it in Settings; install in Applications first. No LaunchAgent or system daemon is installed.
 
