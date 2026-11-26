@@ -1,12 +1,12 @@
 # Changelog
 
-## 0.2.1 · source preview
+## 0.2.1 · Preview 1
 
 - Saved conversion batches retain bounded source snapshots, publication receipts and completed-output checks across restart; interrupted work requires explicit retry.
 - Restored jobs omit elapsed time when it was not recorded. Settings describes the persisted queue accurately.
 - App-model test fixtures use private queues and in-memory preferences. The test-root setup enables durable queue and restart cases.
 - The signed app bundle includes the complete MIT license. CI checks the license bytes and signature in the extracted ZIP.
-- v0.2.0 remains the stable prebuilt download. Saved conversion batches are available when building the 0.2.1 source preview.
+- Saved conversion batches are available in [v0.2.1 Preview 1](https://github.com/nazeeh111/ShiftDrop/releases/tag/v0.2.1-preview.1). v0.2.0 remains the stable download.
 
 ## 0.2.0 · 2026-10-22
 
